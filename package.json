@@ -1,6 +1,6 @@
 {
-  "name": "tauri-gui-template",
-  "version": "0.1.0",
+  "name": "pro-cap",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "next dev",

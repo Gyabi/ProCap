@@ -15,17 +15,17 @@ export const windows: Window[] = [
         href: '/',
         icon: AiFillDashboard
     },
-    {
-        name: 'Sample1',
-        href: '/sample1',
-        icon: HiOutlineUserGroup
-    }
+    // {
+    //     name: 'Sample1',
+    //     href: '/sample1',
+    //     icon: HiOutlineUserGroup
+    // }
 ]
 
 export const specialWindows: Window[] = [
-    {
-        name: 'Setting',
-        href: '/setting',
-        icon: CiSettings
-    }
+    // {
+    //     name: 'Setting',
+    //     href: '/setting',
+    //     icon: CiSettings
+    // }
 ]

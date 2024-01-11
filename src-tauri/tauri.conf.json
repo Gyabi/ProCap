@@ -6,8 +6,8 @@
     "distDir": "../out"
   },
   "package": {
-    "productName": "tauri-gui-template",
-    "version": "0.1.0"
+    "productName": "Pro Cap",
+    "version": "0.0.1"
   },
   "tauri": {
     "allowlist": {
@@ -57,7 +57,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "tauri-gui-template",
+        "title": "Pro Cap",
         "width": 800
       }
     ]
