@@ -1,0 +1,1 @@
+![alt](/doc/画面仕様.drawio.svg)

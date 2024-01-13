@@ -21,8 +21,8 @@ export const Header = ({ isMenuOpen, setIsMenuOpen }: HeaderProps) => {
             </button>
 
             <div className='flex items-center'>
-                <FaReact size={24} />
-                <h1 className='ml-2 text-xl'>Tauri GUI Template</h1>
+                <img src='ProCap.png' alt='ProCap' className='h-8 w-8 p-1' />
+                <h1 className='ml-2 text-xl font-sans font-bold'>Pro Cap</h1>
             </div>
         
         </header>
