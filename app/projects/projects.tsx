@@ -1,11 +1,259 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Select } from "./select";
 import { Add } from "./add";
 import { Edit } from "./edit";
+import { ItemContainer } from "./item-container";
+import { Project } from "./data/project";
 
 export default function Projects() {
+    // プロジェクトデータ
+    const [projects, setProjects] = useState<Project[]>([
+        {
+            id: "1",
+            projectName: "プロジェクト1",
+            description: "プロジェクト1の説明",
+            gitURLs: [
+                {
+                    id: "1",
+                    url: "git_url_1",
+                    description: "git_url_1の説明",
+                },
+                {
+                    id: "2",
+                    url: "git_url_2",
+                    description: "git_url_2の説明",
+                },
+            ],
+            explorerPaths: [
+                {
+                    id: "1",
+                    path: "explorer_path_1",
+                    description: "explorer_path_1の説明",
+                },
+                {
+                    id: "2",
+                    path: "explorer_path_2",
+                    description: "explorer_path_2の説明",
+                },
+            ],
+            otherURLs: [
+                {
+                    id: "1",
+                    url: "other_url_1",
+                    description: "other_url_1の説明",
+                },
+                {
+                    id: "2",
+                    url: "other_url_2",
+                    description: "other_url_2の説明",
+                },
+            ],
+        },
+        {
+            id: "2",
+            projectName: "プロジェクト2",
+            description: "プロジェクト2の説明",
+            gitURLs: [
+                {
+                    id: "1",
+                    url: "git_url_1",
+                    description: "git_url_1の説明",
+                },
+                {
+                    id: "2",
+                    url: "git_url_2",
+                    description: "git_url_2の説明",
+                },
+            ],
+            explorerPaths: [
+                {
+                    id: "1",
+                    path: "explorer_path_1",
+                    description: "explorer_path_1の説明",
+                },
+                {
+                    id: "2",
+                    path: "explorer_path_2",
+                    description: "explorer_path_2の説明",
+                },
+            ],
+            otherURLs: [
+                {
+                    id: "1",
+                    url: "other_url_1",
+                    description: "other_url_1の説明",
+                },
+                {
+                    id: "2",
+                    url: "other_url_2",
+                    description: "other_url_2の説明",
+                },
+            ],
+        },
+        {
+            id: "3",
+            projectName: "プロジェクト3",
+            description: "プロジェクト3の説明",
+            gitURLs: [
+                {
+                    id: "1",
+                    url: "git_url_1",
+                    description: "git_url_1の説明",
+                },
+            ],
+            explorerPaths: [
+                {
+                    id: "1",
+                    path: "explorer_path_1",
+                    description: "explorer_path_1の説明",
+                },
+            ],
+            otherURLs: [
+                {
+                    id: "1",
+                    url: "other_url_1",
+                    description: "other_url_1の説明",
+                },
+            ],
+        },
+        {
+            id: "4",
+            projectName: "プロジェクト4",
+            description: "プロジェクト4の説明",
+            gitURLs: [
+                {
+                    id: "1",
+                    url: "git_url_1",
+                    description: "git_url_1の説明",
+                },
+                {
+                    id: "2",
+                    url: "git_url_2",
+                    description: "git_url_2の説明",
+                },
+                {
+                    id: "3",
+                    url: "git_url_3",
+                    description: "git_url_3の説明",
+                },
+            ],
+            explorerPaths: [
+                {
+                    id: "1",
+                    path: "explorer_path_1",
+                    description: "explorer_path_1の説明",
+                },
+                {
+                    id: "2",
+                    path: "explorer_path_2",
+                    description: "explorer_path_2の説明",
+                },
+                {
+                    id: "3",
+                    path: "explorer_path_3",
+                    description: "explorer_path_3の説明",
+                },
+            ],
+            otherURLs: [
+                {
+                    id: "1",
+                    url: "other_url_1",
+                    description: "other_url_1の説明",
+                },
+                {
+                    id: "2",
+                    url: "other_url_2",
+                    description: "other_url_2の説明",
+                },
+                {
+                    id: "3",
+                    url: "other_url_3",
+                    description: "other_url_3の説明",
+                },
+            ],
+        },
+        {
+            id: "5",
+            projectName: "プロジェクト5",
+            description: "プロジェクト5の説明",
+            gitURLs: [
+                {
+                    id: "1",
+                    url: "git_url_1",
+                    description: "git_url_1の説明",
+                },
+                {
+                    id: "2",
+                    url: "git_url_2",
+                    description: "git_url_2の説明",
+                },
+                {
+                    id: "3",
+                    url: "git_url_3",
+                    description: "git_url_3の説明",
+                },
+                {
+                    id: "4",
+                    url: "git_url_4",
+                    description: "git_url_4の説明",
+                },
+            ],
+            explorerPaths: [
+                {
+                    id: "1",
+                    path: "explorer_path_1",
+                    description: "explorer_path_1の説明",
+                },
+                {
+                    id: "2",
+                    path: "explorer_path_2",
+                    description: "explorer_path_2の説明",
+                },
+                {
+                    id: "3",
+                    path: "explorer_path_3",
+                    description: "explorer_path_3の説明",
+                },
+                {
+                    id: "4",
+                    path: "explorer_path_4",
+                    description: "explorer_path_4の説明",
+                },
+            ],
+            otherURLs: [
+                {
+                    id: "1",
+                    url: "other_url_1",
+                    description: "other_url_1の説明",
+                },
+                {
+                    id: "2",
+                    url: "other_url_2",
+                    description: "other_url_2の説明",
+                },
+                {
+                    id: "3",
+                    url: "other_url_3",
+                    description: "other_url_3の説明",
+                },
+                {
+                    id: "4",
+                    url: "other_url_4",
+                    description: "other_url_4の説明",
+                },
+            ],
+        },
+    ]);
+
+    // // 初回ロード時にプロジェクトデータを取得する処理
+    // useEffect(() => {
+    //     // TODO:データのフェッチ処理
+    //     setProjects([
+    //     ]);
+    // }, []);
+
     enum State {
         DEFAULT,
         SELECT,
@@ -75,7 +323,9 @@ export default function Projects() {
             </div>
 
             {/* メインコンテンツ領域 */}
-            <h1>home</h1>
+            <div className="flex justify-center items-center w-full h-full">
+                <ItemContainer projects={projects} setProjects={setProjects} />
+            </div>
 
             {/* 選択時画面 */}
             {
