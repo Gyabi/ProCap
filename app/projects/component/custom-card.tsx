@@ -1,33 +1,28 @@
 import React, { forwardRef, HTMLAttributes, CSSProperties } from 'react';
 
-export type CustomCardProps = HTMLAttributes<HTMLDivElement> & {
-    id: string;
-    withOpacity?: boolean;
-    isDragging?: boolean;
-};
+export interface CustomCardProps {
+    id: string; // UUID as string
+    projectName: string; // Project name
+    description: string; // Description
+    showProject: (id: string) => void; // Function to show project
+}
 
-const CustomCard = forwardRef<HTMLDivElement, CustomCardProps>(function A({ id, withOpacity, isDragging, style, ...props }, ref) {
-    const inlineStyles: CSSProperties = {
-        opacity: withOpacity ? '0.5' : '1',
-        transformOrigin: '50% 50%',
-        height: '140px',
-        width: '140px',
-        borderRadius: '10px',
-        cursor: isDragging ? 'grabbing' : 'grab',
-        backgroundColor: '#ffffff',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        boxShadow: isDragging  ? 'rgb(63 63 68 / 5%) 0px 2px 0px 2px, rgb(34 33 81 / 15%) 0px 2px 3px 2px' : 'rgb(63 63 68 / 5%) 0px 0px 0px 1px, rgb(34 33 81 / 15%) 0px 1px 3px 0px',
-        transform: isDragging ? 'scale(1.05)' : 'scale(1)',
-        ...style,
-    };
-
-    return(
-        <div ref={ref} style={inlineStyles} {...props}>
-            {id}
-        </div>  
+const CustomCard: React.FC<CustomCardProps> = ({id, projectName, description, showProject}:CustomCardProps) => {
+    return (
+        <div className="w-1/3 px-8 py-4 m-2 flex flex-col bg-white hover:bg-purple-500 border border-2 border-gray-200 hover:border-purple-800  rounded-xl shadow-lg dark:bg-gray-800 dark:border-gray-700"
+        onClick={() => showProject(id)}
+    >
+        <h5 className="mb-2 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white">{projectName}</h5>
+        <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
+            {description.split('\n').map((line, i) => (
+                <span key={i}>
+                    {line}
+                    <br />
+                </span>
+            ))}
+        </p>
+    </div>
     );
-});
+}
 
 export default CustomCard;

@@ -12,13 +12,13 @@ export default function Projects() {
     const [projects, setProjects] = useState<Project[]>([
         {
             id: "1",
-            projectName: "プロジェクト1",
-            description: "プロジェクト1の説明",
+            projectName: "project1",
+            description: "プロジェクト1の説明\n改行テスト\nthis is my project",
             gitURLs: [
                 {
                     id: "1",
                     url: "git_url_1",
-                    description: "git_url_1の説明",
+                    description: "git_url_1の説明\n改行テスト",
                 },
                 {
                     id: "2",
@@ -247,6 +247,9 @@ export default function Projects() {
         },
     ]);
 
+    // 選択中のデータ
+    const [selectedProject, setSelectedProject] = useState<Project | undefined>(undefined);
+
     // // 初回ロード時にプロジェクトデータを取得する処理
     // useEffect(() => {
     //     // TODO:データのフェッチ処理
@@ -269,10 +272,16 @@ export default function Projects() {
 
     // 選択画面
     const [showSelect, setShowSelect] = useState(false);
-    const openSelect = () => {
+    const openSelect = (id:string) => {
+        // 選択しているプロジェクトを設定
+        setSelectedProject(projects.find((project) => project.id == id));
+
+        // 各種画面の表示制御
         setShowSelect(true);
         setShowAdd(false);
         setShowEdit(false);
+
+        // 画面状態を選択画面に変更
         updateState(State.SELECT);
     }
     const closeSelect = () => {
@@ -304,7 +313,9 @@ export default function Projects() {
     const closeEdit = () => {
         setShowEdit(false);
         // 編集画面を終了する時には選択画面に遷移する
-        openSelect();
+        openSelect(selectedProject?.id || "");
+
+        updateState(State.SELECT);
     }
 
     return (
@@ -324,13 +335,13 @@ export default function Projects() {
 
             {/* メインコンテンツ領域 */}
             <div className="flex justify-center items-center w-full h-full">
-                <ItemContainer projects={projects} setProjects={setProjects} />
+                <ItemContainer projects={projects} setProjects={setProjects} showProject={openSelect} />
             </div>
 
             {/* 選択時画面 */}
             {
                 state == State.SELECT &&
-                <Select isOpen={showSelect} onRequestClose={closeSelect}/>
+                <Select isOpen={showSelect} onRequestClose={closeSelect} selectedProject={selectedProject}/>
             }
 
             {/* 追加画面 */}
