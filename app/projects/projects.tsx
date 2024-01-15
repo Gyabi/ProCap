@@ -14,6 +14,11 @@ export default function Projects() {
             id: "1",
             projectName: "project1",
             description: "プロジェクト1の説明\n改行テスト\nthis is my project",
+            mainPath: {
+                id: "1",
+                path: "main_path",
+                description: "main_pathの説明",
+            },
             gitURLs: [
                 {
                     id: "1",
@@ -25,6 +30,21 @@ export default function Projects() {
                     url: "git_url_2",
                     description: "git_url_2の説明",
                 },
+                {
+                    id: "3",
+                    url: "git_url_3",
+                    description: "git_url_3の説明",
+                },
+                {
+                    id: "4",
+                    url: "git_url_4",
+                    description: "git_url_4の説明",
+                },
+                {
+                    id: "5",
+                    url: "git_url_5",
+                    description: "git_url_5の説明",
+                }   
             ],
             explorerPaths: [
                 {
@@ -55,6 +75,11 @@ export default function Projects() {
             id: "2",
             projectName: "プロジェクト2",
             description: "プロジェクト2の説明",
+            mainPath: {
+                id: "1",
+                path: "main_path",
+                description: "main_pathの説明",
+            },
             gitURLs: [
                 {
                     id: "1",
@@ -96,6 +121,11 @@ export default function Projects() {
             id: "3",
             projectName: "プロジェクト3",
             description: "プロジェクト3の説明",
+            mainPath: {
+                id: "1",
+                path: "main_path",
+                description: "main_pathの説明",
+            },
             gitURLs: [
                 {
                     id: "1",
@@ -122,6 +152,11 @@ export default function Projects() {
             id: "4",
             projectName: "プロジェクト4",
             description: "プロジェクト4の説明",
+            mainPath: {
+                id: "1",
+                path: "main_path",
+                description: "main_pathの説明",
+            },
             gitURLs: [
                 {
                     id: "1",
@@ -178,6 +213,11 @@ export default function Projects() {
             id: "5",
             projectName: "プロジェクト5",
             description: "プロジェクト5の説明",
+            mainPath: {
+                id: "1",
+                path: "main_path",
+                description: "main_pathの説明",
+            },
             gitURLs: [
                 {
                     id: "1",
@@ -341,7 +381,7 @@ export default function Projects() {
             {/* 選択時画面 */}
             {
                 state == State.SELECT &&
-                <Select isOpen={showSelect} onRequestClose={closeSelect} selectedProject={selectedProject}/>
+                <Select isOpen={showSelect} onRequestClose={closeSelect} selectedProject={selectedProject} deleteProject={() => {}} openEditModal={openEdit}/>
             }
 
             {/* 追加画面 */}
