@@ -170,10 +170,7 @@ export default function Projects() {
     }
     const closeEdit = () => {
         setShowEdit(false);
-        // 編集画面を終了する時には選択画面に遷移する
-        openSelect(selectedProject?.id || "");
-
-        updateState(State.SELECT);
+        updateState(State.DEFAULT);
     }
 
     return (

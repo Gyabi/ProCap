@@ -1,3 +1,4 @@
+"use client";
 import { CustomModal } from "./component/custom-modal";
 import React, { useEffect, useState } from 'react';
 import { Project } from "./data/project";
@@ -16,11 +17,23 @@ interface SelectProps {
 }
 
 export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedProject, setSelectedProject, projects, setProjects, openEditModal}:SelectProps) => {
+  useEffect(() => {
+  }, [selectedProject]);
+  
   const onClickEdit = () => {
     openEditModal();
   }
   const onClickDelete = () => {
-    console.log("delete");
+    if (selectedProject === undefined) {
+      return;
+    }
+
+    const newProjects = projects.filter((project) => {
+      return project.projectName !== selectedProject.projectName;
+    });
+    setProjects(newProjects);
+    setSelectedProject(undefined);
+
     // TODO: 削除処理
 
     onRequestClose();

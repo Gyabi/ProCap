@@ -1,3 +1,4 @@
+"use client";
 import { CustomModal } from "./component/custom-modal";
 import React, { useState, useEffect } from 'react';
 import { Project } from "./data/project";
