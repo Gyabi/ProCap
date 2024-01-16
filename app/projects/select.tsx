@@ -1,5 +1,5 @@
 import { CustomModal } from "./component/custom-modal";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Project } from "./data/project";
 import { ExplorerButton, BrowserButton, CopyButton, TerminalButton, VsCodeButton } from "./component/util-buttons";
 
@@ -9,20 +9,21 @@ interface SelectProps {
   isOpen: boolean;
   onRequestClose: () => void;
   selectedProject: Project|undefined;
+  setSelectedProject: React.Dispatch<React.SetStateAction<Project | undefined>>;
+  projects: Project[];
+  setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
   openEditModal: () => void;
-  deleteProject: (id:string) => void;
 }
 
-export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedProject, openEditModal, deleteProject}:SelectProps) => {
+export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedProject, setSelectedProject, projects, setProjects, openEditModal}:SelectProps) => {
   const onClickEdit = () => {
     openEditModal();
-    console.log("edit");
-    //  TODO: 編集処理
   }
   const onClickDelete = () => {
-    deleteProject(selectedProject?.id || "");
     console.log("delete");
     // TODO: 削除処理
+
+    onRequestClose();
   }
 
   return (
@@ -87,18 +88,21 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
               <div className="my-2" key={index}>
                 <BrowserButton url={gitURL.url} >
                   <div className="flex flex-col mx-2">
+                    <div className="font-bold">
+                      {gitURL.title}
+                    </div>
                     <div>
                       {gitURL.url}
                     </div>
                     <div>
-                    <p className="mb-2 font-normal text-gray-700 dark:text-gray-400">
-                      {gitURL.description.split('\n').map((line, i) => (
-                        <span key={i}>
-                          {line}
-                          <br />
-                        </span>
-                      ))}
-                    </p>
+                      <p className="mb-2 font-normal text-gray-700 dark:text-gray-400">
+                        {gitURL.description.split('\n').map((line, i) => (
+                          <span key={i}>
+                            {line}
+                            <br />
+                          </span>
+                        ))}
+                      </p>
                    </div>
                   </div>
                 </BrowserButton>
@@ -116,6 +120,9 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
               <div className="my-2" key={index}>
                 <ExplorerButton path={explorerPath.path} >
                   <div className="flex flex-col mx-2">
+                    <div className="font-bold">
+                      {explorerPath.title}
+                    </div>
                     <div>
                       {explorerPath.path}
                     </div>
@@ -145,6 +152,9 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
               <div className="my-2" key={index}>
                 <BrowserButton url={otherURLs.url} >
                   <div className="flex flex-col mx-2">
+                    <div className="font-bold">
+                      {otherURLs.title}
+                    </div>
                     <div>
                       {otherURLs.url}
                     </div>

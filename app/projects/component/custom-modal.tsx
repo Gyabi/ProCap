@@ -16,7 +16,8 @@ export const CustomModal: React.FC<CustomModalProps> = ({ isOpen, shouldCloseOnO
         isOpen={isOpen}
         shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
         onRequestClose={onRequestClose}
-        ariaHideApp={false}
+        ariaHideApp={true}
+        
         style={{
           overlay: {
             backgroundColor: 'rgba(0, 0, 0, 0.5)',

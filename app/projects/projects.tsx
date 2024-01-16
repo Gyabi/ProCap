@@ -11,291 +11,109 @@ export default function Projects() {
     // プロジェクトデータ
     const [projects, setProjects] = useState<Project[]>([
         {
+        id: "1",
+        projectName: "Project1",
+        description: "Project1の説明文",
+        mainPath: {
             id: "1",
-            projectName: "project1",
-            description: "プロジェクト1の説明\n改行テスト\nthis is my project",
-            mainPath: {
-                id: "1",
-                path: "main_path",
-                description: "main_pathの説明",
-            },
-            gitURLs: [
-                {
-                    id: "1",
-                    url: "git_url_1",
-                    description: "git_url_1の説明\n改行テスト",
-                },
-                {
-                    id: "2",
-                    url: "git_url_2",
-                    description: "git_url_2の説明",
-                },
-                {
-                    id: "3",
-                    url: "git_url_3",
-                    description: "git_url_3の説明",
-                },
-                {
-                    id: "4",
-                    url: "git_url_4",
-                    description: "git_url_4の説明",
-                },
-                {
-                    id: "5",
-                    url: "git_url_5",
-                    description: "git_url_5の説明",
-                }   
-            ],
-            explorerPaths: [
-                {
-                    id: "1",
-                    path: "explorer_path_1",
-                    description: "explorer_path_1の説明",
-                },
-                {
-                    id: "2",
-                    path: "explorer_path_2",
-                    description: "explorer_path_2の説明",
-                },
-            ],
-            otherURLs: [
-                {
-                    id: "1",
-                    url: "other_url_1",
-                    description: "other_url_1の説明",
-                },
-                {
-                    id: "2",
-                    url: "other_url_2",
-                    description: "other_url_2の説明",
-                },
-            ],
+            title: "main",
+            path: "/path/to/main",
+            description: "mainの説明文",
         },
-        {
-            id: "2",
-            projectName: "プロジェクト2",
-            description: "プロジェクト2の説明",
-            mainPath: {
+        explorerPaths: [
+            {
                 id: "1",
-                path: "main_path",
-                description: "main_pathの説明",
+                title: "explorer1",
+                path: "/path/to/explorer1",
+                description: "explorer1の説明文",
             },
-            gitURLs: [
-                {
-                    id: "1",
-                    url: "git_url_1",
-                    description: "git_url_1の説明",
-                },
-                {
-                    id: "2",
-                    url: "git_url_2",
-                    description: "git_url_2の説明",
-                },
-            ],
-            explorerPaths: [
-                {
-                    id: "1",
-                    path: "explorer_path_1",
-                    description: "explorer_path_1の説明",
-                },
-                {
-                    id: "2",
-                    path: "explorer_path_2",
-                    description: "explorer_path_2の説明",
-                },
-            ],
-            otherURLs: [
-                {
-                    id: "1",
-                    url: "other_url_1",
-                    description: "other_url_1の説明",
-                },
-                {
-                    id: "2",
-                    url: "other_url_2",
-                    description: "other_url_2の説明",
-                },
-            ],
-        },
-        {
-            id: "3",
-            projectName: "プロジェクト3",
-            description: "プロジェクト3の説明",
-            mainPath: {
+            {
+                id: "2",
+                title: "explorer2",
+                path: "/path/to/explorer2",
+                description: "explorer2の説明文",
+            },
+        ],
+        gitURLs: [
+            {
                 id: "1",
-                path: "main_path",
-                description: "main_pathの説明",
+                title: "git1",
+                url: "aaa",
+                description: "git1の説明文",
             },
-            gitURLs: [
-                {
-                    id: "1",
-                    url: "git_url_1",
-                    description: "git_url_1の説明",
-                },
-            ],
-            explorerPaths: [
-                {
-                    id: "1",
-                    path: "explorer_path_1",
-                    description: "explorer_path_1の説明",
-                },
-            ],
-            otherURLs: [
-                {
-                    id: "1",
-                    url: "other_url_1",
-                    description: "other_url_1の説明",
-                },
-            ],
-        },
-        {
-            id: "4",
-            projectName: "プロジェクト4",
-            description: "プロジェクト4の説明",
-            mainPath: {
+            {
+                id: "2",
+                title: "git2",
+                url: "bbb",
+                description: "git2の説明文",
+            }
+        ],
+        otherURLs: [
+            {
                 id: "1",
-                path: "main_path",
-                description: "main_pathの説明",
-            },
-            gitURLs: [
-                {
-                    id: "1",
-                    url: "git_url_1",
-                    description: "git_url_1の説明",
-                },
-                {
-                    id: "2",
-                    url: "git_url_2",
-                    description: "git_url_2の説明",
-                },
-                {
-                    id: "3",
-                    url: "git_url_3",
-                    description: "git_url_3の説明",
-                },
-            ],
-            explorerPaths: [
-                {
-                    id: "1",
-                    path: "explorer_path_1",
-                    description: "explorer_path_1の説明",
-                },
-                {
-                    id: "2",
-                    path: "explorer_path_2",
-                    description: "explorer_path_2の説明",
-                },
-                {
-                    id: "3",
-                    path: "explorer_path_3",
-                    description: "explorer_path_3の説明",
-                },
-            ],
-            otherURLs: [
-                {
-                    id: "1",
-                    url: "other_url_1",
-                    description: "other_url_1の説明",
-                },
-                {
-                    id: "2",
-                    url: "other_url_2",
-                    description: "other_url_2の説明",
-                },
-                {
-                    id: "3",
-                    url: "other_url_3",
-                    description: "other_url_3の説明",
-                },
-            ],
+                title: "other1",
+                url: "aaa",
+                description: "other1の説明文",
+            }
+        ],
+    },
+    {
+        id: "2",
+        projectName: "Project2",
+        description: "Project2の説明文",
+        mainPath: {
+            id: "1",
+            title: "main",
+            path: "/path/to/main",
+            description: "mainの説明文",
         },
-        {
-            id: "5",
-            projectName: "プロジェクト5",
-            description: "プロジェクト5の説明",
-            mainPath: {
+        explorerPaths: [
+            {
                 id: "1",
-                path: "main_path",
-                description: "main_pathの説明",
+                title: "explorer1",
+                path: "/path/to/explorer1",
+                description: "explorer1の説明文",
             },
-            gitURLs: [
-                {
-                    id: "1",
-                    url: "git_url_1",
-                    description: "git_url_1の説明",
-                },
-                {
-                    id: "2",
-                    url: "git_url_2",
-                    description: "git_url_2の説明",
-                },
-                {
-                    id: "3",
-                    url: "git_url_3",
-                    description: "git_url_3の説明",
-                },
-                {
-                    id: "4",
-                    url: "git_url_4",
-                    description: "git_url_4の説明",
-                },
-            ],
-            explorerPaths: [
-                {
-                    id: "1",
-                    path: "explorer_path_1",
-                    description: "explorer_path_1の説明",
-                },
-                {
-                    id: "2",
-                    path: "explorer_path_2",
-                    description: "explorer_path_2の説明",
-                },
-                {
-                    id: "3",
-                    path: "explorer_path_3",
-                    description: "explorer_path_3の説明",
-                },
-                {
-                    id: "4",
-                    path: "explorer_path_4",
-                    description: "explorer_path_4の説明",
-                },
-            ],
-            otherURLs: [
-                {
-                    id: "1",
-                    url: "other_url_1",
-                    description: "other_url_1の説明",
-                },
-                {
-                    id: "2",
-                    url: "other_url_2",
-                    description: "other_url_2の説明",
-                },
-                {
-                    id: "3",
-                    url: "other_url_3",
-                    description: "other_url_3の説明",
-                },
-                {
-                    id: "4",
-                    url: "other_url_4",
-                    description: "other_url_4の説明",
-                },
-            ],
-        },
+            {
+                id: "2",
+                title: "explorer2",
+                path: "/path/to/explorer2",
+                description: "explorer2の説明文",
+            },
+        ],
+        gitURLs: [
+            {
+                id: "1",
+                title: "git1",
+                url: "aaa",
+                description: "git1の説明文",
+            },
+            {
+                id: "2",
+                title: "git2",
+                url: "bbb",
+                description: "git2の説明文",
+            }
+        ],
+        otherURLs: [
+            {
+                id: "1",
+                title: "other1",
+                url: "aaa",
+                description: "other1の説明文",
+            }
+        ],
+    }
     ]);
 
     // 選択中のデータ
     const [selectedProject, setSelectedProject] = useState<Project | undefined>(undefined);
 
-    // // 初回ロード時にプロジェクトデータを取得する処理
-    // useEffect(() => {
-    //     // TODO:データのフェッチ処理
-    //     setProjects([
-    //     ]);
-    // }, []);
+    // 初回ロード時にプロジェクトデータを取得する処理
+    useEffect(() => {
+        // TODO:データのフェッチ処理
+        // setProjects([]);
+    }, []);
 
     enum State {
         DEFAULT,
@@ -345,8 +163,8 @@ export default function Projects() {
     // 編集画面
     const [showEdit, setShowEdit] = useState(false);
     const openEdit = () => {
-        setShowEdit(true);
         setShowSelect(false);
+        setShowEdit(true);
         setShowAdd(false);
         updateState(State.EDIT);
     }
@@ -381,7 +199,7 @@ export default function Projects() {
             {/* 選択時画面 */}
             {
                 state == State.SELECT &&
-                <Select isOpen={showSelect} onRequestClose={closeSelect} selectedProject={selectedProject} deleteProject={() => {}} openEditModal={openEdit}/>
+                <Select isOpen={showSelect} onRequestClose={closeSelect} selectedProject={selectedProject} setSelectedProject={setSelectedProject} projects={projects} setProjects={setProjects} openEditModal={openEdit}/>
             }
 
             {/* 追加画面 */}
@@ -393,7 +211,7 @@ export default function Projects() {
             {/* 編集画面 */}
             {
                 state == State.EDIT &&
-                <Edit isOpen={showEdit} onRequestClose={closeEdit}/>
+                <Edit isOpen={showEdit} onRequestClose={closeEdit} selectedProject={selectedProject} setSelectedProject={setSelectedProject} projects={projects} setProjects={setProjects} />
             }
         </div>
     )
