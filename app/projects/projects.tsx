@@ -205,7 +205,7 @@ export default function Projects() {
             {/* 追加画面 */}
             {
                 state == State.ADD &&
-                <Add isOpen={showAdd} onRequestClose={closeAdd}/>
+                <Add isOpen={showAdd} onRequestClose={closeAdd} projects={projects} setProjects={setProjects}/>
             }
 
             {/* 編集画面 */}
