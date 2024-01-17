@@ -1,34 +1,38 @@
-import React, { FC } from "react";
+import React from "react";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import CustomCard, { CustomCardProps} from "./custom-card";
+import { RxDragHandleDots2 } from "react-icons/rx";
 
-export const SortableItem: FC<CustomCardProps> = (props) => {
+interface SortableItemProps {
+    id: string;
+    children?: React.ReactNode;
+}
+
+export const SortableItem: React.FC<SortableItemProps> = ({ id, children }: SortableItemProps) => {
     const {
-        isDragging,
         attributes,
         listeners,
         setNodeRef,
         transform,
-        transition
-    } = useSortable({ id: props.id });
+        transition,
+        isDragging
+      } = useSortable({id: id});
 
     const style = {
         transform: CSS.Transform.toString(transform),
-        transition: transition || undefined,
+        transition,
+        zIndex: isDragging ? "100" : "auto",
+        opacity: isDragging ? 0.3 : 1
     };
 
     return (
-        // 各種データを送ることでD＆Dを自動で実装
-        <CustomCard
-            ref={setNodeRef}
-            style={style}
-            withOpacity={isDragging}
-            {...props}
-            {...attributes}
-            {...listeners}
-        />
-    );
-};
-
-export default SortableItem;
+        <div ref={setNodeRef} style={style} className="relative">
+            {children}
+            <div className="absolute top-4 right-4">
+                <button {...listeners} {...attributes}>
+                    <RxDragHandleDots2 size={24} />
+                </button>
+            </div>
+        </div>
+    )
+}
