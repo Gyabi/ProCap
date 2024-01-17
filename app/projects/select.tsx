@@ -94,7 +94,7 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
 
         {/* gitURL */}
         <h5 className="my-2 text-xl font-extrabold tracking-tight text-gray-900 dark:text-white decoration-purple-700 underline">git URLs</h5>
-        <div className="flex flex-col justify-center items-center w-full">
+        <div className="flex flex-col justify-start items-start w-full">
           {/* 各要素が存在するなら表示 */}
           { selectedProject?.gitURLs.map((gitURL, index) => {
             return (
@@ -126,7 +126,7 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
 
         {/* exploler */}
         <h5 className="my-2 text-xl font-extrabold tracking-tight text-gray-900 dark:text-white decoration-purple-700 underline">explorer</h5>
-        <div className="flex flex-col justify-center items-center w-full">
+        <div className="flex flex-col justify-start items-start w-full">
           {/* 各要素が存在するなら表示 */}
           { selectedProject?.explorerPaths.map((explorerPath, index) => {
             return (
@@ -158,7 +158,7 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
 
         {/* other */}
         <h5 className="my-2 text-xl font-extrabold tracking-tight text-gray-900 dark:text-white decoration-purple-700 underline">other</h5>
-        <div className="flex flex-col justify-center items-center w-full">
+        <div className="flex flex-col justify-start items-start w-full">
           {/* 各要素が存在するなら表示 */}
           { selectedProject?.otherURLs.map((otherURLs, index) => {
             return (
