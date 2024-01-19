@@ -1,39 +1,47 @@
-export const openExplorer = (path: string) => {
-    // ディレクトリのパスになっているか確認
-    if (!path.endsWith('/')) {
-        // エラー発行
-        throw new Error('Path is not directory path.');
-    }
-    
-    // TODO: open explorer
-};
+import { invoke } from "@tauri-apps/api/tauri";
 
-export const openVsCode = (path: string) => {
-    // ディレクトリのパスになっているか確認
-    if (!path.endsWith('/')) {
-        // エラー発行
-        throw new Error('Path is not directory path.');
-    }
-    
-    // TODO: open vscode
-};
-
-export const openTerminal = (path: string) => {
-    // ディレクトリのパスになっているか確認
-    if (!path.endsWith('/')) {
-        // エラー発行
-        throw new Error('Path is not directory path.');
-    }
-
-    // TODO: open
+/**
+ * エクスプローラを開く
+ * @param path 
+ * @returns 実行結果エラーログ
+ */
+export const openExplorer = async (path: string): Promise<string> => {
+    return await invoke("open_explorer", { path: path });
 }
 
-
-export const copyToClipboard = (text: string) => {
-    // TODO: copy to clipboard
+/**
+ * VSCodeを開く
+ * @param path
+ * @returns 実行結果エラーログ
+ *  
+ */
+export const openVsCode = async (path: string): Promise<string> => {
+    return await invoke("open_vscode", { path: path });
 }
 
-export const openBrowser = (url: string) => {
-    
-    // TODO: open browser
+/**
+ * ターミナルを開く
+ * @param path 
+ * @returns 実行結果エラーログ
+ */
+export const openTerminal = async (path: string): Promise<string> => {
+    return await invoke("open_terminal", { path: path });
+}
+
+/**
+ * クリップボードへコピー
+ * @param path 
+ * @returns 実行結果エラーログ
+ */
+export const copyToClipboard = async (text: string): Promise<string> => {
+    return await invoke("copy_to_clipboard", { text: text });
+}
+
+/**
+ * ブラウザを開く
+ * @param path 
+ * @returns 実行結果エラーログ
+ */
+export const openBrowser = async (url: string): Promise<string> => {
+    return await invoke("open_browser", { url: url });
 }

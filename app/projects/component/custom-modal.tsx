@@ -1,3 +1,4 @@
+"use client";
 import ReactModal from "react-modal"
 import React from 'react';
 

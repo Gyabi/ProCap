@@ -1,4 +1,5 @@
-import React, { forwardRef, HTMLAttributes, CSSProperties } from 'react';
+"use client";
+import React from 'react';
 
 export interface CustomCardProps {
     id: string; // UUID as string
