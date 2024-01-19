@@ -7,6 +7,7 @@ import { MdDone } from "react-icons/md";
 import { IoMdAddCircle } from "react-icons/io";
 
 import { generateUuid } from "./logic/uuid";
+import { ask } from "@tauri-apps/api/dialog";
 
 /**
  * プロジェクト編集画面プロパティ
@@ -49,7 +50,17 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
   }
 
   const onClickEditCancel = () => {
-    onRequestClose();
+    // 確認ダイアログ
+    ask("編集内容を破棄してよいですか？",{
+      title: "",
+      type: "warning",
+      okLabel: "OK",
+      cancelLabel: "Cancel",
+    }).then((result) => {
+      if(result){
+        onRequestClose();
+      }
+    });
   }
 
   const onClickAddGitURL = () => {

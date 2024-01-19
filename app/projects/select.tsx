@@ -7,6 +7,7 @@ import { ExplorerButton, BrowserButton, CopyButton, TerminalButton, VsCodeButton
 import { RiDeleteBinFill } from "react-icons/ri";
 import { CiEdit } from "react-icons/ci";
 
+import { ask } from "@tauri-apps/api/dialog";
 /**
  * 選択画面のProps
  */
@@ -37,15 +38,25 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
       return;
     }
 
-    const newProjects = projects.filter((project) => {
-      return project.projectName !== selectedProject.projectName;
+    // 確認ダイアログ
+    ask("本当に削除しますか？",{
+      title: "",
+      type: "warning",
+      okLabel: "OK",
+      cancelLabel: "Cancel",
+    }).then((result) => {
+      if(result){
+        const newProjects = projects.filter((project) => {
+          return project.projectName !== selectedProject.projectName;
+        });
+        setProjects(newProjects);
+        setSelectedProject(undefined);
+    
+        // TODO: 削除処理
+    
+        onRequestClose();
+      };
     });
-    setProjects(newProjects);
-    setSelectedProject(undefined);
-
-    // TODO: 削除処理
-
-    onRequestClose();
   }
 
   return (
