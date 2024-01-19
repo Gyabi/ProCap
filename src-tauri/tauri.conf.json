@@ -11,7 +11,19 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "dialog": {
+        "all": true,
+        "ask": true,
+        "confirm": true,
+        "message": true,
+        "open": true,
+        "save": true
+      },
+      "clipboard": {
+        "all": true,
+        "readText": false,
+        "writeText": true
+      }
     },
     "bundle": {
       "active": true,
@@ -28,7 +40,7 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "kano",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
@@ -55,7 +67,7 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
+        "height": 900,
         "resizable": true,
         "title": "Pro Cap",
         "width": 800

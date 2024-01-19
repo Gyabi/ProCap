@@ -1,5 +1,5 @@
 import { IconType } from 'react-icons/lib';
-import { AiFillDashboard } from 'react-icons/ai';
+import { GiCaptainHatProfile } from "react-icons/gi";
 import { HiOutlineUserGroup } from 'react-icons/hi';
 import { CiSettings } from "react-icons/ci";
 
@@ -11,9 +11,9 @@ type Window = {
 
 export const windows: Window[] = [
     {
-        name: 'Home',
+        name: 'Projects',
         href: '/',
-        icon: AiFillDashboard
+        icon: GiCaptainHatProfile
     },
     // {
     //     name: 'Sample1',
