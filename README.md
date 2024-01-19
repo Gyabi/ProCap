@@ -1,10 +1,12 @@
-<center>
-    <h2>ProCap</h2>
-    <p>ローカルプロジェクトフォルダ管理アプリ</p>
-</center>
-<center>
-    <img src="ProCap.png" style="width: 20%; height: 20%;">
-</center>
+<h2 align="center">
+    ProCap
+</h2>
+<p align="center">
+    ローカルプロジェクトフォルダ管理アプリ
+</p>
+<p align="center">
+  <img src="ProCap.png" style="width: 20%; height: 20%;">
+</p>
 
 # Demo
 ![alt](/doc/demo.jpg)
