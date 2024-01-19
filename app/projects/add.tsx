@@ -12,6 +12,8 @@ import { ExplorerPath } from "./data/explorer_path";
 import { OtherURL } from "./data/other_url";
 import { updateProjects } from "./logic/project_curd";
 
+import { ask } from "@tauri-apps/api/dialog";
+
 /**
  * 追加画面プロパティ
  */
@@ -69,7 +71,17 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
       onRequestClose();
     }
     const onClickAddCancel = () => {
-      onRequestClose();
+      // 確認ダイアログ
+      ask("編集内容を破棄してよいですか？",{
+        title: "",
+        type: "warning",
+        okLabel: "OK",
+        cancelLabel: "Cancel",
+      }).then((result) => {
+        if(result){
+          onRequestClose();
+        }
+      });
     }
 
     const onClickAddGitURL = () => {
