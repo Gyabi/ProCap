@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api/tauri";
+import { writeText } from "@tauri-apps/api/clipboard";
 
 /**
  * エクスプローラを開く
@@ -33,8 +34,8 @@ export const openTerminal = async (path: string): Promise<string> => {
  * @param path 
  * @returns 実行結果エラーログ
  */
-export const copyToClipboard = async (text: string): Promise<string> => {
-    return await invoke("copy_to_clipboard", { text: text });
+export const copyToClipboard = async (text: string): Promise<void> => {
+    return await writeText(text);
 }
 
 /**

@@ -97,6 +97,7 @@ fn open_vscode(path: String) -> Result<(), String>{
   Command::new("cmd")
     .arg("/c")
     .arg("start")
+    .arg("/min")
     .arg("code")
     .arg(path_buf.to_str().unwrap())
     .spawn()
@@ -110,6 +111,7 @@ fn open_browser(url: String) -> Result<(), String>{
   Command::new("cmd")
     .arg("/c")
     .arg("start")
+    .arg("/min")
     .arg(url)
     .spawn()
     .map_err(|e| format!("Failed to open browser: {}", e))?;
@@ -117,26 +119,9 @@ fn open_browser(url: String) -> Result<(), String>{
   Ok(())
 }
 
-#[tauri::command]
-fn copy_to_clipboard(text: String) -> Result<(), String>{
-
-  Command::new("cmd")
-    .arg("/c")
-    .arg("printf")
-    .arg("%s")
-    .arg(text)
-    .arg("|")
-    .arg("clip")
-    .spawn()
-    .map_err(|e| format!("Failed to copy to clipboard: {}", e))?;
-
-  Ok(())
-}
-
-
 fn main() {
   tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![load_projects_command, save_projects_command, open_explorer, open_terminal, open_vscode, open_browser, copy_to_clipboard])
+    .invoke_handler(tauri::generate_handler![load_projects_command, save_projects_command, open_explorer, open_terminal, open_vscode, open_browser])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

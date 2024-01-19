@@ -7,6 +7,7 @@
 </center>
 
 # Demo
+![alt](/doc/demo.jpg)
 
 # Requirement
 - tauri 1.4.0

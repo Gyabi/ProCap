@@ -97,11 +97,7 @@ export const CopyButton: React.FC<CopyButtonProps> = ({ path, children }: CopyBu
     return (
       <div>
         <UtilButton method={async () => {
-          await copyToClipboard(path).catch((e:string) => {
-            // エラーダイアログを表示
-            message(e, { title: "error", type: "error" })
-          })
-          .then(() => {
+          await copyToClipboard(path).then(() => {
             // 成功ダイアログを表示
             setIsSuccessOpen(true);
           })
