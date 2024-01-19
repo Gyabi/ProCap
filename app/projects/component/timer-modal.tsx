@@ -40,7 +40,7 @@ export const TimerModal: React.FC<TimerModalProps> = ({ isOpen, onRequestClose, 
                     width: '40%',
                     height: '10%',
                     transform: 'translate(-50%, -50%)',
-                    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                    backgroundColor: 'rgba(0, 0, 0, 0)',
                     border: 'none',
                 },
             }}

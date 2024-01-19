@@ -122,7 +122,8 @@ fn copy_to_clipboard(text: String) -> Result<(), String>{
 
   Command::new("cmd")
     .arg("/c")
-    .arg("echo")
+    .arg("printf")
+    .arg("%s")
     .arg(text)
     .arg("|")
     .arg("clip")
