@@ -9,6 +9,8 @@ import { arrayMove } from "@dnd-kit/sortable";
 import { SortableItem } from "./component/sortable-item";
 import { DragOverlay } from "@dnd-kit/core";
 
+import { updateProjects } from "./logic/project_curd";
+
 /**
  * カードコンテナのProps
  */
@@ -38,7 +40,7 @@ export const ItemContainer: React.FC<ItemContainerProps> = ({projects, setProjec
         setActiveId(event.active.id);
     };
 
-    const handleDragEnd = (event:any) => {
+    const handleDragEnd = async (event:any) => {
         setActiveId(null);
         const { active, over } = event;
     
@@ -49,7 +51,9 @@ export const ItemContainer: React.FC<ItemContainerProps> = ({projects, setProjec
             // 配列の更新
             const newProjects = arrayMove(projects, oldIndex, newIndex);
             setProjects(newProjects);
-            // TODO:アップデート処理
+
+            // ファイルに保存
+            await updateProjects(newProjects);
         }
     };
 

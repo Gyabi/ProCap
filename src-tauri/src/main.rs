@@ -6,6 +6,30 @@
 use std::process::Command;
 use std::path::PathBuf;
 
+mod project;
+use project::{load_projects, save_projects, Project};
+
+
+#[tauri::command]
+async fn load_projects_command() -> Result<Vec<Project>, String> {
+  let projects = match load_projects().await {
+    Ok(projects) => projects,
+    Err(e) => return Err(format!("Failed to load project: {}", e)),
+  };
+
+  Ok(projects)
+}
+
+#[tauri::command]
+async fn save_projects_command(projects: Vec<Project>) -> Result<(), String> {
+  match save_projects(projects).await {
+    Ok(_) => (),
+    Err(e) => return Err(format!("Failed to save project: {}", e)),
+  };
+
+  Ok(())
+}
+
 #[tauri::command]
 fn open_explorer(path: String) -> Result<(), String>{
   let path_buf = PathBuf::from(path);
@@ -111,7 +135,7 @@ fn copy_to_clipboard(text: String) -> Result<(), String>{
 
 fn main() {
   tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![open_explorer, open_terminal, open_vscode, open_browser, copy_to_clipboard])
+    .invoke_handler(tauri::generate_handler![load_projects_command, save_projects_command, open_explorer, open_terminal, open_vscode, open_browser, copy_to_clipboard])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }

@@ -15,10 +15,18 @@ export default function Projects() {
     // 選択中のデータ
     const [selectedProject, setSelectedProject] = useState<Project | undefined>(undefined);
 
-    // 初回ロード時にプロジェクトデータを取得する処理
+    // 初回ロード時にプロジェクトデータを取得する処理(2回フェッチ対策でignoreを使用)
     useEffect(() => {
-        // TODO:データのフェッチ処理
-        setProjects(readProjects());
+        let ignore = false;
+
+        readProjects()
+            .then((projects: Project[]) => {
+                if (!ignore) {
+                    setProjects(projects);
+                }
+            });
+        
+        return () => { ignore = true; }
     }, []);
 
     enum State {

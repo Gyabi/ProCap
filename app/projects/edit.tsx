@@ -9,6 +9,8 @@ import { IoMdAddCircle } from "react-icons/io";
 import { generateUuid } from "./logic/uuid";
 import { ask } from "@tauri-apps/api/dialog";
 
+import { updateProjects } from "./logic/project_curd";
+
 /**
  * プロジェクト編集画面プロパティ
  */
@@ -37,14 +39,16 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
     setEditProject(JSON.parse(JSON.stringify(selectedProject)))
   }, [isOpen]);
 
-  const onClickEditDone = () => {
+  const onClickEditDone = async () => {
     // editProjectをprojectsとselectedProjectに反映する
-    // TODO:アップデート処理
     setSelectedProject(JSON.parse(JSON.stringify(editProject)));
     const newProjects = [...projects];
     const index = newProjects.findIndex((project) => project.id === editProject?.id);
     newProjects[index] = editProject as Project;
     setProjects(newProjects);
+
+    // プロジェクトデータを保存する
+    await updateProjects(newProjects);
 
     onRequestClose();
   }
@@ -67,18 +71,18 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
     if(editProject === undefined){
       return;
     }
-    const newGitURLs = [...editProject.gitURLs];
+    const newGitURLs = [...editProject.gitUrls];
     newGitURLs.push({id: generateUuid(), title: "", url: "", description: ""});
-    setEditProject({...editProject, gitURLs: newGitURLs});
+    setEditProject({...editProject, gitUrls: newGitURLs});
   }
 
   const onClickDeleteGitURL = (index: number) => {
     if(editProject === undefined){
       return;
     }
-    const newGitURLs = [...editProject.gitURLs];
+    const newGitURLs = [...editProject.gitUrls];
     newGitURLs.splice(index, 1);
-    setEditProject({...editProject, gitURLs: newGitURLs});
+    setEditProject({...editProject, gitUrls: newGitURLs});
   }
 
   const onClickAddExplorerPath = () => {
@@ -103,18 +107,18 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
     if(editProject === undefined){
       return;
     }
-    const newOtherURLs = [...editProject.otherURLs];
-    newOtherURLs.push({id: generateUuid(), title: "", url: "", description: ""});
-    setEditProject({...editProject, otherURLs: newOtherURLs});
+    const newOtherUrls = [...editProject.otherUrls];
+    newOtherUrls.push({id: generateUuid(), title: "", url: "", description: ""});
+    setEditProject({...editProject, otherUrls: newOtherUrls});
   }
 
   const onClickDeleteOtherURL = (index: number) => {
     if(editProject === undefined){
       return;
     }
-    const newOtherURLs = [...editProject.otherURLs];
-    newOtherURLs.splice(index, 1);
-    setEditProject({...editProject, otherURLs: newOtherURLs});
+    const newOtherUrls = [...editProject.otherUrls];
+    newOtherUrls.splice(index, 1);
+    setEditProject({...editProject, otherUrls: newOtherUrls});
   }
 
   return (
@@ -240,7 +244,7 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
         </div>
 
         <div className="bg-gray-400 mt-2 rounded p-1">
-          {editProject?.gitURLs.map((gitURL, index) => {
+          {editProject?.gitUrls.map((gitURL, index) => {
             return (
               <div className="flex justify-between w-full my-2 bg-gray-300 p-2 rounded" key={index}>
                 <div className="flex flex-col justify-start w-11/12 mr-2">
@@ -257,9 +261,9 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
                       if(editProject === undefined){
                         return;
                       }
-                      const newGitURLs = [...editProject.gitURLs];
-                      newGitURLs[index].title = e.target.value;
-                      setEditProject({...editProject, gitURLs: newGitURLs});
+                      const newGitUrls = [...editProject.gitUrls];
+                      newGitUrls[index].title = e.target.value;
+                      setEditProject({...editProject, gitUrls: newGitUrls});
                     }}
                   />
                   <label className="block text-gray-700 dark:text-white text-xs font-bold mb-2" htmlFor="mainPath">
@@ -275,9 +279,9 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
                       if(editProject === undefined){
                         return;
                       }
-                      const newGitURLs = [...editProject.gitURLs];
-                      newGitURLs[index].url = e.target.value;
-                      setEditProject({...editProject, gitURLs: newGitURLs});
+                      const newGitUrls = [...editProject.gitUrls];
+                      newGitUrls[index].url = e.target.value;
+                      setEditProject({...editProject, gitUrls: newGitUrls});
                     }}
                   />
                   <label className="block text-gray-700 dark:text-white text-xs font-bold mb-2" htmlFor="mainPath">
@@ -292,9 +296,9 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
                       if(editProject === undefined){
                         return;
                       }
-                      const newGitURLs = [...editProject.gitURLs];
-                      newGitURLs[index].description = e.target.value;
-                      setEditProject({...editProject, gitURLs: newGitURLs});
+                      const newGitUrls = [...editProject.gitUrls];
+                      newGitUrls[index].description = e.target.value;
+                      setEditProject({...editProject, gitUrls: newGitUrls});
                     }}
                   />
                 </div>
@@ -411,7 +415,7 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
         </div>
 
         <div className="bg-gray-400 mt-2 rounded p-1">
-          {editProject?.otherURLs.map((otherURL, index) => {
+          {editProject?.otherUrls.map((otherURL, index) => {
             return (
               <div className="flex justify-between w-full my-2 bg-gray-300 p-2 rounded" key={index}>
                 <div className="flex flex-col justify-start w-11/12 mr-2">
@@ -428,9 +432,9 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
                       if(editProject === undefined){
                         return;
                       }
-                      const newOtherURLs = [...editProject.otherURLs];
-                      newOtherURLs[index].title = e.target.value;
-                      setEditProject({...editProject, otherURLs: newOtherURLs});
+                      const newOtherUrls = [...editProject.otherUrls];
+                      newOtherUrls[index].title = e.target.value;
+                      setEditProject({...editProject, otherUrls: newOtherUrls});
                     }}
                   />
                   <label className="block text-gray-700 dark:text-white text-xs font-bold mb-2" htmlFor="mainPath">
@@ -446,9 +450,9 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
                       if(editProject === undefined){
                         return;
                       }
-                      const newOtherURLs = [...editProject.otherURLs];
-                      newOtherURLs[index].url = e.target.value;
-                      setEditProject({...editProject, otherURLs: newOtherURLs});
+                      const newOtherUrls = [...editProject.otherUrls];
+                      newOtherUrls[index].url = e.target.value;
+                      setEditProject({...editProject, otherUrls: newOtherUrls});
                     }}
                   />
                   <label className="block text-gray-700 dark:text-white text-xs font-bold mb-2" htmlFor="mainPath">
@@ -464,9 +468,9 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
                       if(editProject === undefined){
                         return;
                       }
-                      const newOtherURLs = [...editProject.otherURLs];
-                      newOtherURLs[index].description = e.target.value;
-                      setEditProject({...editProject, otherURLs: newOtherURLs});
+                      const newOtherUrls = [...editProject.otherUrls];
+                      newOtherUrls[index].description = e.target.value;
+                      setEditProject({...editProject, otherUrls: newOtherUrls});
                     }}
                   />
                 </div>

@@ -8,6 +8,8 @@ import { RiDeleteBinFill } from "react-icons/ri";
 import { CiEdit } from "react-icons/ci";
 
 import { ask } from "@tauri-apps/api/dialog";
+
+import { updateProjects } from "./logic/project_curd";
 /**
  * 選択画面のProps
  */
@@ -33,18 +35,18 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
   const onClickEdit = () => {
     openEditModal();
   }
-  const onClickDelete = () => {
+  const onClickDelete = async () => {
     if (selectedProject === undefined) {
       return;
     }
 
     // 確認ダイアログ
-    ask("本当に削除しますか？",{
+    await ask("本当に削除しますか？",{
       title: "",
       type: "warning",
       okLabel: "OK",
       cancelLabel: "Cancel",
-    }).then((result) => {
+    }).then(async (result) => {
       if(result){
         const newProjects = projects.filter((project) => {
           return project.projectName !== selectedProject.projectName;
@@ -52,8 +54,9 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
         setProjects(newProjects);
         setSelectedProject(undefined);
     
-        // TODO: 削除処理
-    
+        // ファイルに保存
+        await updateProjects(newProjects);
+
         onRequestClose();
       };
     });
@@ -116,7 +119,7 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
         <h5 className="my-2 text-xl font-extrabold tracking-tight text-gray-900 dark:text-white decoration-purple-700 underline">git URLs</h5>
         <div className="flex flex-col justify-start items-start w-full">
           {/* 各要素が存在するなら表示 */}
-          { selectedProject?.gitURLs.map((gitURL, index) => {
+          { selectedProject?.gitUrls.map((gitURL, index) => {
             return (
               <div className="my-2" key={index}>
                 <BrowserButton url={gitURL.url} >
@@ -180,20 +183,20 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
         <h5 className="my-2 text-xl font-extrabold tracking-tight text-gray-900 dark:text-white decoration-purple-700 underline">other</h5>
         <div className="flex flex-col justify-start items-start w-full">
           {/* 各要素が存在するなら表示 */}
-          { selectedProject?.otherURLs.map((otherURLs, index) => {
+          { selectedProject?.otherUrls.map((otherUrls, index) => {
             return (
               <div className="my-2" key={index}>
-                <BrowserButton url={otherURLs.url} >
+                <BrowserButton url={otherUrls.url} >
                   <div className="flex flex-col mx-2">
                     <div className="font-bold">
-                      {otherURLs.title}
+                      {otherUrls.title}
                     </div>
                     <div>
-                      {otherURLs.url}
+                      {otherUrls.url}
                     </div>
                     <div>
                     <p className="mb-2 font-normal text-gray-700 dark:text-gray-400">
-                      {otherURLs.description.split('\n').map((line, i) => (
+                      {otherUrls.description.split('\n').map((line, i) => (
                         <span key={i}>
                           {line}
                           <br />

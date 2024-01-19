@@ -8,8 +8,9 @@ import { IoMdAddCircle } from "react-icons/io";
 
 import { generateUuid } from "./logic/uuid";
 import { GitURL } from "./data/git_url";
-import { ExplolerPath } from "./data/explorer_path";
+import { ExplorerPath } from "./data/explorer_path";
 import { OtherURL } from "./data/other_url";
+import { updateProjects } from "./logic/project_curd";
 
 /**
  * 追加画面プロパティ
@@ -37,15 +38,17 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
         path: "",
         description: "",
       },
-      gitURLs: [],
+      gitUrls: [],
       explorerPaths: [],
-      otherURLs: [],
+      otherUrls: [],
     });
 
-    const onClickAddDone = () => {
-      //TODO:アップデート処理
+    const onClickAddDone = async () => {
       const newProjects = [...projects, addProject];
       setProjects(newProjects);
+
+      // ファイルに保存
+      await updateProjects(newProjects);
 
       // リセット
       setAddProject({
@@ -58,9 +61,9 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
           path: "",
           description: "",
         },
-        gitURLs: [],
+        gitUrls: [],
         explorerPaths: [],
-        otherURLs: [],
+        otherUrls: [],
       });
 
       onRequestClose();
@@ -70,23 +73,23 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
     }
 
     const onClickAddGitURL = () => {
-      const newGitURLs: GitURL[] = [...addProject.gitURLs, {
+      const newGitUrls: GitURL[] = [...addProject.gitUrls, {
         id: generateUuid(),
         title: "",
         url: "",
         description: "",
       }];
-      setAddProject({...addProject, gitURLs: newGitURLs});
+      setAddProject({...addProject, gitUrls: newGitUrls});
     }
 
     const onClickDeleteGitURL = (index: number) => {
-      const newGitURLs = [...addProject.gitURLs];
-      newGitURLs.splice(index, 1);
-      setAddProject({...addProject, gitURLs: newGitURLs});
+      const newGitUrls = [...addProject.gitUrls];
+      newGitUrls.splice(index, 1);
+      setAddProject({...addProject, gitUrls: newGitUrls});
     }
 
     const onClickAddExplorerPath = () => {
-      const newExplorerPaths: ExplolerPath[] = [...addProject.explorerPaths, {
+      const newExplorerPaths: ExplorerPath[] = [...addProject.explorerPaths, {
         id: generateUuid(),
         title: "",
         path: "",
@@ -102,19 +105,19 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
     }
 
     const onClickAddOtherURL = () => {
-      const newOtherURLs: OtherURL[] = [...addProject.otherURLs, {
+      const newOtherUrls: OtherURL[] = [...addProject.otherUrls, {
         id: generateUuid(),
         title: "",
         url: "",
         description: "",
       }];
-      setAddProject({...addProject, otherURLs: newOtherURLs});
+      setAddProject({...addProject, otherUrls: newOtherUrls});
     }
 
     const onClickDeleteOtherURL = (index: number) => {
-      const newOtherURLs = [...addProject.otherURLs];
-      newOtherURLs.splice(index, 1);
-      setAddProject({...addProject, otherURLs: newOtherURLs});
+      const newOtherUrls = [...addProject.otherUrls];
+      newOtherUrls.splice(index, 1);
+      setAddProject({...addProject, otherUrls: newOtherUrls});
     }
 
   return (
@@ -226,7 +229,7 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
           </div>
         </div>
         <div className="bg-gray-400 mt-2 rounded p-1">
-          {addProject?.gitURLs.map((gitURL, index) => {
+          {addProject?.gitUrls.map((gitURL, index) => {
             return (
               <div className="flex justify-between w-full my-2 bg-gray-300 p-2 rounded" key={index}>
                 <div className="flex flex-col justify-start w-11/12 mr-2">
@@ -240,9 +243,9 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
                     placeholder="Enter title"
                     value={gitURL.title}
                     onChange={(e) => {
-                      const newGitURLs = [...addProject.gitURLs];
-                      newGitURLs[index].title = e.target.value;
-                      setAddProject({...addProject, gitURLs: newGitURLs});
+                      const newGitUrls = [...addProject.gitUrls];
+                      newGitUrls[index].title = e.target.value;
+                      setAddProject({...addProject, gitUrls: newGitUrls});
                     }}
                   />
                   <label className="block text-gray-700 dark:text-white text-xs font-bold mb-2" htmlFor="mainPath">
@@ -255,9 +258,9 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
                     placeholder="Enter URL"
                     value={gitURL.url}
                     onChange={(e) => {
-                      const newGitURLs = [...addProject.gitURLs];
-                      newGitURLs[index].url = e.target.value;
-                      setAddProject({...addProject, gitURLs: newGitURLs});
+                      const newGitUrls = [...addProject.gitUrls];
+                      newGitUrls[index].url = e.target.value;
+                      setAddProject({...addProject, gitUrls: newGitUrls});
                     }}
                   />
                   <label className="block text-gray-700 dark:text-white text-xs font-bold mb-2" htmlFor="mainPath">
@@ -269,9 +272,9 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
                     placeholder="Enter description"
                     value={gitURL.description}
                     onChange={(e) => {
-                      const newGitURLs = [...addProject.gitURLs];
-                      newGitURLs[index].description = e.target.value;
-                      setAddProject({...addProject, gitURLs: newGitURLs});
+                      const newGitUrls = [...addProject.gitUrls];
+                      newGitUrls[index].description = e.target.value;
+                      setAddProject({...addProject, gitUrls: newGitUrls});
                     }}
                   />
                 </div>
@@ -380,7 +383,7 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
         </div>
 
         <div className="bg-gray-400 mt-2 rounded p-1">
-          {addProject?.otherURLs.map((otherURL, index) => {
+          {addProject?.otherUrls.map((otherURL, index) => {
             return (
               <div className="flex justify-between w-full my-2 bg-gray-300 p-2 rounded" key={index}>
                 <div className="flex flex-col justify-start w-11/12 mr-2">
@@ -394,9 +397,9 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
                     placeholder="Enter title"
                     value={otherURL.title}
                     onChange={(e) => {
-                      const newOtherURLs = [...addProject.otherURLs];
-                      newOtherURLs[index].title = e.target.value;
-                      setAddProject({...addProject, otherURLs: newOtherURLs});
+                      const newOtherUrls = [...addProject.otherUrls];
+                      newOtherUrls[index].title = e.target.value;
+                      setAddProject({...addProject, otherUrls: newOtherUrls});
                     }}
                   />
                   <label className="block text-gray-700 dark:text-white text-xs font-bold mb-2" htmlFor="mainPath">
@@ -409,9 +412,9 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
                     placeholder="Enter URL"
                     value={otherURL.url}
                     onChange={(e) => {
-                      const newOtherURLs = [...addProject.otherURLs];
-                      newOtherURLs[index].url = e.target.value;
-                      setAddProject({...addProject, otherURLs: newOtherURLs});
+                      const newOtherUrls = [...addProject.otherUrls];
+                      newOtherUrls[index].url = e.target.value;
+                      setAddProject({...addProject, otherUrls: newOtherUrls});
                     }}
                   />
                   <label className="block text-gray-700 dark:text-white text-xs font-bold mb-2" htmlFor="mainPath">
@@ -423,9 +426,9 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
                     placeholder="Enter description"
                     value={otherURL.description}
                     onChange={(e) => {
-                      const newOtherURLs = [...addProject.otherURLs];
-                      newOtherURLs[index].description = e.target.value;
-                      setAddProject({...addProject, otherURLs: newOtherURLs});
+                      const newOtherUrls = [...addProject.otherUrls];
+                      newOtherUrls[index].description = e.target.value;
+                      setAddProject({...addProject, otherUrls: newOtherUrls});
                     }}
                   />
                 </div>
