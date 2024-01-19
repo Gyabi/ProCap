@@ -12,14 +12,14 @@ interface TimerModalProps {
 
 export const TimerModal: React.FC<TimerModalProps> = ({ isOpen, onRequestClose, timer, message }:TimerModalProps) => {
     // isopenがtrueになったら、タイマーをカウントダウンして、タイマーが0になったら、モーダルを閉じる
-    // React.useEffect(() => {
-    //     if (isOpen) {
-    //         const timerId = setTimeout(() => {
-    //             onRequestClose();
-    //         }, timer * 1000);
-    //         return () => clearTimeout(timerId);
-    //     }
-    // }, [isOpen]);
+    React.useEffect(() => {
+        if (isOpen) {
+            const timerId = setTimeout(() => {
+                onRequestClose();
+            }, timer * 1000);
+            return () => clearTimeout(timerId);
+        }
+    }, [isOpen]);
 
     return (
         <ReactModal
@@ -37,7 +37,7 @@ export const TimerModal: React.FC<TimerModalProps> = ({ isOpen, onRequestClose, 
                     right: 'auto',
                     bottom: 'auto',
                     marginRight: '-50%',
-                    width: '20%',
+                    width: '40%',
                     height: '10%',
                     transform: 'translate(-50%, -50%)',
                     backgroundColor: 'rgba(0, 0, 0, 0.1)',
@@ -45,10 +45,10 @@ export const TimerModal: React.FC<TimerModalProps> = ({ isOpen, onRequestClose, 
                 },
             }}
         >
-            <div className="flex flex-col justify-center items-center h-full">
-                <div className="text-center py-4 lg:px-4">
-                    <div className="p-2 bg-indigo-800 items-center text-indigo-100 leading-none lg:rounded-full flex lg:inline-flex" role="alert">
-                        <span className="font-semibold mr-2 text-left flex-auto">{message}</span>
+            <div className="flex flex-col justify-center items-center h-full w-full">
+                <div className="text-center items-center py-4 lg:px-4 w-fit">
+                    <div className="p-2 bg-indigo-800 items-center text-center text-indigo-100 leading-none rounded-full flex" role="alert">
+                        <span className="font-semibold mr-2 flex-auto">{message}</span>
                     </div>
                 </div>
             </div>
