@@ -11,6 +11,9 @@ import { GitURL } from "./data/git_url";
 import { ExplolerPath } from "./data/explorer_path";
 import { OtherURL } from "./data/other_url";
 
+/**
+ * 追加画面プロパティ
+ */
 interface AddProps {
   isOpen: boolean;
   onRequestClose: () => void;
@@ -18,6 +21,11 @@ interface AddProps {
   setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
 }
 
+/**
+ * 追加画面コンポーネント
+ * @param param0 
+ * @returns 
+ */
 export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setProjects}:AddProps) => {
   const [addProject, setAddProject] = useState<Project>({
       id: generateUuid(),

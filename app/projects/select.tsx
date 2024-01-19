@@ -6,6 +6,10 @@ import { ExplorerButton, BrowserButton, CopyButton, TerminalButton, VsCodeButton
 
 import { RiDeleteBinFill } from "react-icons/ri";
 import { CiEdit } from "react-icons/ci";
+
+/**
+ * 選択画面のProps
+ */
 interface SelectProps {
   isOpen: boolean;
   onRequestClose: () => void;
@@ -16,6 +20,11 @@ interface SelectProps {
   openEditModal: () => void;
 }
 
+/**
+ * 選択画面コンポーネント
+ * @param param0 
+ * @returns 
+ */
 export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedProject, setSelectedProject, projects, setProjects, openEditModal}:SelectProps) => {
   useEffect(() => {
   }, [selectedProject]);

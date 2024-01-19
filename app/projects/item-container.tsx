@@ -8,12 +8,21 @@ import { SortableContext, rectSortingStrategy, sortableKeyboardCoordinates } fro
 import { arrayMove } from "@dnd-kit/sortable";
 import { SortableItem } from "./component/sortable-item";
 import { DragOverlay } from "@dnd-kit/core";
+
+/**
+ * カードコンテナのProps
+ */
 interface ItemContainerProps {
     projects: Project[];
     setProjects: (projects: Project[]) => void;
     showProject: (id: string) => void;
 }
 
+/**
+ * D&D対応のカードコンテナ
+ * @param param0 
+ * @returns 
+ */
 export const ItemContainer: React.FC<ItemContainerProps> = ({projects, setProjects, showProject}:ItemContainerProps) => {
     // 現在選択しているカード
     const [activeId, setActiveId] = useState<string | null>(null);

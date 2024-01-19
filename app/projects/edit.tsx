@@ -8,6 +8,9 @@ import { IoMdAddCircle } from "react-icons/io";
 
 import { generateUuid } from "./logic/uuid";
 
+/**
+ * プロジェクト編集画面プロパティ
+ */
 interface EditProps {
   isOpen: boolean;
   onRequestClose: () => void;
@@ -17,11 +20,19 @@ interface EditProps {
   setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
 }
 
+/**
+ * 編集画面
+ * @param param0 
+ * @returns 
+ */
 export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProject, setSelectedProject, projects, setProjects}:EditProps) => {
   const [editProject, setEditProject] = useState<Project|undefined>(selectedProject);
 
   // isOpenがtrueに変化したときに、selectedProjectをeditProject複製する
   useEffect(() => {
+    if(isOpen === false){
+      return;
+    }
     setEditProject(JSON.parse(JSON.stringify(selectedProject)))
   }, [isOpen]);
 
