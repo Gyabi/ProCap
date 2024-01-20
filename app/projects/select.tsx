@@ -49,7 +49,7 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
     }).then(async (result) => {
       if(result){
         const newProjects = projects.filter((project) => {
-          return project.projectName !== selectedProject.projectName;
+          return project.id !== selectedProject.id;
         });
         setProjects(newProjects);
         setSelectedProject(undefined);

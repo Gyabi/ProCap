@@ -22,7 +22,7 @@ pub async fn save_projects(projects: Vec<Project>)-> Result<(), Box<dyn std::err
         projects: projects,
     };
 
-    // ディレクトリの存在を保障
+    // ディレクトリの存在を保証
     let dir = Path::new(&path).parent().unwrap();
     if !dir.exists() {
         fs::create_dir_all(dir)?;
@@ -33,6 +33,7 @@ pub async fn save_projects(projects: Vec<Project>)-> Result<(), Box<dyn std::err
     
     let mut fout = std::fs::OpenOptions::new()
         .write(true)
+        .truncate(true)
         .create(true)
         .open(path)?;
 
