@@ -1,24 +1,24 @@
 "use client";
-import { CustomModal } from "./component/modal/custom-modal";
-import React, { useState, useEffect } from 'react';
-import { Project } from "./data/project";
-
-import { generateUuid } from "./logic/uuid";
-import { GitURL } from "./data/git_url";
-import { ExplorerPath } from "./data/explorer_path";
-import { OtherURL } from "./data/other_url";
-import { updateProjects } from "./logic/project_curd";
-
+import React, { useState } from 'react';
 import { ask } from "@tauri-apps/api/dialog";
 
 import { CancelButton } from "./component/buttons/cancel-button";
 import { DoneButton } from "./component/buttons/done-button";
 import { SingleRowInput } from "./component/inputs/single-row-input";
 import { MultiRowInput } from "./component/inputs/multi-row-input";
-
+import { CustomModal } from "./component/modal/custom-modal";
 import { GitUrlListEditor } from "./component/list-editor/git-url-list-editor";
 import { ExplorerPathListEditor } from "./component/list-editor/exploler-path-list-editor";
 import { OtherUrlListEditor } from "./component/list-editor/other-url-list-editor";
+
+import { Project } from "./data/project";
+import { GitURL } from "./data/git_url";
+import { ExplorerPath } from "./data/explorer_path";
+import { OtherURL } from "./data/other_url";
+
+import { updateProjects } from "./logic/project_curd";
+import { generateUuid } from "./logic/uuid";
+
 
 /**
  * 追加画面プロパティ
