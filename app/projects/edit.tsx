@@ -169,6 +169,7 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
             <GitUrlListEditor
               gitUrls={editProject.gitUrls}
               updateGitUrls={updateGitUrls}
+              sortabled={true}
             />
           </div>
           
@@ -177,6 +178,7 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
             <ExplorerPathListEditor
               explorerPaths={editProject.explorerPaths}
               updateExplorerPaths={updateExplorerPaths}
+              sortabled={true}
             />
           </div>
 
@@ -185,6 +187,7 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
             <OtherUrlListEditor
               otherUrls={editProject.otherUrls}
               updateOtherUrls={updateOtherUrls}
+              sortabled={true}
             />
           </div>
       </div>

@@ -5,9 +5,10 @@ import { ExplorerPath } from "../../data/explorer_path";
 interface ExplorerPathListEditorProps {
     explorerPaths: ExplorerPath[];
     updateExplorerPaths: (explorerPaths: ExplorerPath[]) => void; // データ更新関数
+    sortabled?: boolean;
 }
 
-export const ExplorerPathListEditor = ({explorerPaths, updateExplorerPaths}: ExplorerPathListEditorProps) => {
+export const ExplorerPathListEditor = ({explorerPaths, updateExplorerPaths, sortabled}: ExplorerPathListEditorProps) => {
     return (
         <ListEditor
             mainTitle="explorer paths"
@@ -17,6 +18,8 @@ export const ExplorerPathListEditor = ({explorerPaths, updateExplorerPaths}: Exp
             placeholder2="Enter path"
             subTitle3="Description"
             placeholder3="Enter description"
+
+            sortabled={sortabled}
 
             datas={explorerPaths.map((explorerPath) => {
                 return {

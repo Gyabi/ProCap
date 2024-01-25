@@ -5,9 +5,10 @@ import { OtherURL } from "../../data/other_url";
 interface OtherUrlListEditorProps {
     otherUrls: OtherURL[];
     updateOtherUrls: (otherUrls: OtherURL[]) => void; // データ更新関数
+    sortabled?: boolean;
 }
 
-export const OtherUrlListEditor = ({otherUrls, updateOtherUrls}: OtherUrlListEditorProps) => {
+export const OtherUrlListEditor = ({otherUrls, updateOtherUrls, sortabled}: OtherUrlListEditorProps) => {
     return (
         <ListEditor
             mainTitle="other URLs"
@@ -17,6 +18,8 @@ export const OtherUrlListEditor = ({otherUrls, updateOtherUrls}: OtherUrlListEdi
             placeholder2="Enter URL"
             subTitle3="Description"
             placeholder3="Enter description"
+
+            sortabled={sortabled}
 
             datas={otherUrls.map((otherUrl) => {
                 return {

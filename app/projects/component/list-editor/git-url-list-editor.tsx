@@ -5,9 +5,10 @@ import { GitURL } from "../../data/git_url";
 interface GitUrlListEditorProps {
     gitUrls: GitURL[];
     updateGitUrls: (gitUrl: GitURL[]) => void; // データ更新関数
+    sortabled?: boolean;
 }
 
-export const GitUrlListEditor = ({gitUrls, updateGitUrls}: GitUrlListEditorProps) => {
+export const GitUrlListEditor = ({gitUrls, updateGitUrls, sortabled}: GitUrlListEditorProps) => {
     return (
         <ListEditor
             mainTitle="git URLs"
@@ -17,6 +18,7 @@ export const GitUrlListEditor = ({gitUrls, updateGitUrls}: GitUrlListEditorProps
             placeholder2="Enter URL"
             subTitle3="Description"
             placeholder3="Enter description"
+            sortabled={sortabled}
 
             datas={gitUrls.map((gitUrl) => {
                 return {
