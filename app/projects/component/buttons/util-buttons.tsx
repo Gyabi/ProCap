@@ -1,12 +1,12 @@
 "use client";
-import { openExplorer, copyToClipboard, openTerminal, openVsCode, openBrowser } from "../logic/url_path_utils";
+import { openExplorer, copyToClipboard, openTerminal, openVsCode, openBrowser } from "../../logic/url_path_utils";
 import { FaRegFolderOpen } from "react-icons/fa6";
 import { BsBrowserChrome } from "react-icons/bs";
 import { TbBrandVscode } from "react-icons/tb";
 import { FaRegClipboard } from "react-icons/fa";
 import { BsTerminal } from "react-icons/bs";
 import React from "react";
-import { TimerModal } from "./timer-modal";
+import { TimerModal } from "../modal/timer-modal";
 
 import { message } from "@tauri-apps/api/dialog";
 

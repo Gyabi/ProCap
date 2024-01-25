@@ -1,8 +1,8 @@
 "use client";
-import { CustomModal } from "./component/custom-modal";
+import { CustomModal } from "./component/modal/custom-modal";
 import React, { useEffect, useState } from 'react';
 import { Project } from "./data/project";
-import { ExplorerButton, BrowserButton, CopyButton, TerminalButton, VsCodeButton } from "./component/util-buttons";
+import { ExplorerButton, BrowserButton, CopyButton, TerminalButton, VsCodeButton } from "./component/buttons/util-buttons";
 
 import { RiDeleteBinFill } from "react-icons/ri";
 import { CiEdit } from "react-icons/ci";

@@ -1,5 +1,5 @@
 "use client";
-import { CustomModal } from "./component/custom-modal";
+import { CustomModal } from "./component/modal/custom-modal";
 import React, { useState, useEffect } from 'react';
 import { Project } from "./data/project";
 import { MdCancel } from "react-icons/md";
