@@ -15,7 +15,7 @@ const CustomCard: React.FC<CustomCardProps> = ({id, projectName, description, sh
             onClick={() => showProject(id)}
         >
             {children}
-            <h5 className="mb-2 text-2xl font-extrabold tracking-tight text-gray-900 dark:text-white" style={{ wordWrap: 'break-word' }}>{projectName}</h5>
+            <h5 className="mb-2 text-2xl font-extrabold tracking-tight decoration-purple-700 underline text-gray-900 dark:text-white" style={{ wordWrap: 'break-word' }}>{projectName}</h5>
             <p className="mb-3 font-normal text-gray-700 dark:text-gray-400" style={{ wordWrap: 'break-word' }}>
                 {description.split('\n').map((line, i) => (
                     <span key={i}>
