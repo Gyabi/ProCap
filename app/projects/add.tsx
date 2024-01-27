@@ -16,7 +16,6 @@ import { GitURL } from "./data/git_url";
 import { ExplorerPath } from "./data/explorer_path";
 import { OtherURL } from "./data/other_url";
 
-import { updateProjects } from "./logic/project_curd";
 import { generateUuid } from "./logic/uuid";
 
 
@@ -26,8 +25,7 @@ import { generateUuid } from "./logic/uuid";
 interface AddProps {
   isOpen: boolean;
   onRequestClose: () => void;
-  projects: Project[];
-  setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
+  addProject: (project: Project) => Promise<void>;
 }
 
 /**
@@ -35,8 +33,8 @@ interface AddProps {
  * @param param0 
  * @returns 
  */
-export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setProjects}:AddProps) => {
-  const [addProject, setAddProject] = useState<Project>({
+export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, addProject}:AddProps) => {
+  const [addingProject, setAddingProject] = useState<Project>({
       id: generateUuid(),
       projectName: "",
       description: "",
@@ -52,14 +50,11 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
     });
 
     const onClickAddDone = async () => {
-      const newProjects = [...projects, addProject];
-      setProjects(newProjects);
-
-      // ファイルに保存
-      await updateProjects(newProjects);
+      // データの追加と保存
+      await addProject(addingProject);
 
       // リセット
-      setAddProject({
+      setAddingProject({
         id: generateUuid(),
         projectName: "",
         description: "",
@@ -76,6 +71,7 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
 
       onRequestClose();
     }
+
     const onClickAddCancel = () => {
       // 確認ダイアログ
       ask("編集内容を破棄してよいですか？",{
@@ -91,15 +87,15 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
     }
 
     const updateGitUrls = (gitUrls: GitURL[]) => {
-      setAddProject({...addProject, gitUrls: gitUrls});
+      setAddingProject({...addingProject, gitUrls: gitUrls});
     }
 
     const updateExplorerPaths = (explorerPaths: ExplorerPath[]) => {
-      setAddProject({...addProject, explorerPaths: explorerPaths});
+      setAddingProject({...addingProject, explorerPaths: explorerPaths});
     }
 
     const updateOtherUrls = (otherUrls: OtherURL[]) => {
-      setAddProject({...addProject, otherUrls: otherUrls});
+      setAddingProject({...addingProject, otherUrls: otherUrls});
     }
 
   return (
@@ -127,9 +123,9 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
           <SingleRowInput
             title="Project Name"
             placeholder="Enter project name"
-            value={addProject?.projectName}
+            value={addingProject?.projectName}
             onChange={(e) => {
-              setAddProject({...addProject, projectName: e.target.value})
+              setAddingProject({...addingProject, projectName: e.target.value})
             }}
           />
         </div>
@@ -139,10 +135,10 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
           <MultiRowInput
             title="Description"
             placeholder="Enter description"
-            value={addProject?.description}
+            value={addingProject?.description}
             defaultHeight={32}
             onChange={(e) => {
-              setAddProject({...addProject, description: e.target.value})
+              setAddingProject({...addingProject, description: e.target.value})
             }}
           />
         </div>
@@ -153,18 +149,18 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
             title="Main Path"
             subtitle="Path"
             placeholder="Enter main path"
-            value={addProject?.mainPath.path}
+            value={addingProject?.mainPath.path}
             onChange={(e) => {
-              setAddProject({...addProject, mainPath: {id:addProject.mainPath.id, title:"main", path: e.target.value, description: addProject.mainPath.description}})
+              setAddingProject({...addingProject, mainPath: {id:addingProject.mainPath.id, title:"main", path: e.target.value, description: addingProject.mainPath.description}})
             }}
           />
           <MultiRowInput
             subtitle="Description"
             placeholder="Enter description"
-            value={addProject?.mainPath.description}
+            value={addingProject?.mainPath.description}
             defaultHeight={16}
             onChange={(e) => {
-              setAddProject({...addProject, mainPath: {id:addProject.mainPath.id, title:"main", path: addProject.mainPath.path, description: e.target.value}})
+              setAddingProject({...addingProject, mainPath: {id:addingProject.mainPath.id, title:"main", path: addingProject.mainPath.path, description: e.target.value}})
             }}
           />
         </div>
@@ -172,7 +168,7 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
         {/* gitURL */}
         <div className="my-2">
           <GitUrlListEditor
-            gitUrls={addProject.gitUrls}
+            gitUrls={addingProject.gitUrls}
             updateGitUrls={updateGitUrls}
           />
         </div>
@@ -180,7 +176,7 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
         {/* exploler */}
         <div className="my-2">
           <ExplorerPathListEditor
-            explorerPaths={addProject.explorerPaths}
+            explorerPaths={addingProject.explorerPaths}
             updateExplorerPaths={updateExplorerPaths}
           />
         </div>
@@ -188,7 +184,7 @@ export const Add: React.FC<AddProps> = ({isOpen, onRequestClose, projects, setPr
         {/* other */}
         <div className="my-2">
           <OtherUrlListEditor
-            otherUrls={addProject.otherUrls}
+            otherUrls={addingProject.otherUrls}
             updateOtherUrls={updateOtherUrls}
           />
         </div>

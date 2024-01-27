@@ -8,8 +8,6 @@ import { RiDeleteBinFill } from "react-icons/ri";
 import { CiEdit } from "react-icons/ci";
 
 import { ask } from "@tauri-apps/api/dialog";
-
-import { updateProjects } from "./logic/project_curd";
 /**
  * 選択画面のProps
  */
@@ -18,8 +16,7 @@ interface SelectProps {
   onRequestClose: () => void;
   selectedProject: Project|undefined;
   setSelectedProject: React.Dispatch<React.SetStateAction<Project | undefined>>;
-  projects: Project[];
-  setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
+  deleteProject: (id: string) => Promise<void>;
   openEditModal: () => void;
 }
 
@@ -28,7 +25,7 @@ interface SelectProps {
  * @param param0 
  * @returns 
  */
-export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedProject, setSelectedProject, projects, setProjects, openEditModal}:SelectProps) => {
+export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedProject, setSelectedProject, deleteProject, openEditModal}:SelectProps) => {
   useEffect(() => {
   }, [selectedProject]);
   
@@ -48,14 +45,10 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
       cancelLabel: "Cancel",
     }).then(async (result) => {
       if(result){
-        const newProjects = projects.filter((project) => {
-          return project.id !== selectedProject.id;
-        });
-        setProjects(newProjects);
+        // データの削除と保存を実行
+        await deleteProject(selectedProject.id);
+
         setSelectedProject(undefined);
-    
-        // ファイルに保存
-        await updateProjects(newProjects);
 
         onRequestClose();
       };

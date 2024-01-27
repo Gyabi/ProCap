@@ -16,8 +16,6 @@ import { GitURL } from "./data/git_url";
 import { ExplorerPath } from "./data/explorer_path";
 import { OtherURL } from "./data/other_url";
 
-import { updateProjects } from "./logic/project_curd";
-
 /**
  * プロジェクト編集画面プロパティ
  */
@@ -26,8 +24,7 @@ interface EditProps {
   onRequestClose: () => void;
   selectedProject: Project|undefined;
   setSelectedProject: React.Dispatch<React.SetStateAction<Project | undefined>>;
-  projects: Project[];
-  setProjects: React.Dispatch<React.SetStateAction<Project[]>>;
+  updateProject: (project: Project) => void;
 }
 
 /**
@@ -35,7 +32,7 @@ interface EditProps {
  * @param param0 
  * @returns 
  */
-export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProject, setSelectedProject, projects, setProjects}:EditProps) => {
+export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProject, setSelectedProject, updateProject}:EditProps) => {
   const [editProject, setEditProject] = useState<Project|undefined>(selectedProject);
 
   // isOpenがtrueに変化したときに、selectedProjectをeditProject複製する
@@ -49,13 +46,9 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
   const onClickEditDone = async () => {
     // editProjectをprojectsとselectedProjectに反映する
     setSelectedProject(JSON.parse(JSON.stringify(editProject)));
-    const newProjects = [...projects];
-    const index = newProjects.findIndex((project) => project.id === editProject?.id);
-    newProjects[index] = editProject as Project;
-    setProjects(newProjects);
 
-    // プロジェクトデータを保存する
-    await updateProjects(newProjects);
+    // データの更新と保存
+    updateProject(editProject as Project);
 
     onRequestClose();
   }

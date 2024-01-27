@@ -6,7 +6,7 @@ import { Add } from "./add";
 import { Edit } from "./edit";
 import { ItemContainer } from "./item-container";
 import { Project } from "./data/project";
-import { readProjects } from "./logic/project_curd";
+import { readProjects, updateProjects } from "./logic/project_curd";
 
 export default function Projects() {
     // プロジェクトデータ
@@ -28,6 +28,31 @@ export default function Projects() {
         
         return () => { ignore = true; }
     }, []);
+
+
+    const deleteProject = async (id: string) => {
+        const newProjects = projects.filter((project) => project.id != id);
+        setProjects(newProjects);
+        await updateProjects(newProjects);
+    }
+
+    const updateProject = async (project: Project) => {
+        const newProjects = [...projects];
+        const index = newProjects.findIndex((p) => p.id == project.id);
+        newProjects[index] = project;
+        setProjects(newProjects);
+
+        await updateProjects(newProjects);
+    }
+
+    const addProject = async (project: Project) => {
+        const newProjects = [...projects, project];
+        setProjects(newProjects);
+        // setProjectsが即時反映されないのでnewProjectsを渡す
+        await updateProjects(newProjects);
+    }
+
+
 
     enum State {
         DEFAULT,
@@ -110,19 +135,19 @@ export default function Projects() {
             {/* 選択時画面 */}
             {
                 state == State.SELECT &&
-                <Select isOpen={showSelect} onRequestClose={closeSelect} selectedProject={selectedProject} setSelectedProject={setSelectedProject} projects={projects} setProjects={setProjects} openEditModal={openEdit}/>
+                <Select isOpen={showSelect} onRequestClose={closeSelect} selectedProject={selectedProject} setSelectedProject={setSelectedProject} deleteProject={deleteProject} openEditModal={openEdit}/>
             }
 
             {/* 追加画面 */}
             {
                 state == State.ADD &&
-                <Add isOpen={showAdd} onRequestClose={closeAdd} projects={projects} setProjects={setProjects}/>
+                <Add isOpen={showAdd} onRequestClose={closeAdd} addProject={addProject}/>
             }
 
             {/* 編集画面 */}
             {
                 state == State.EDIT &&
-                <Edit isOpen={showEdit} onRequestClose={closeEdit} selectedProject={selectedProject} setSelectedProject={setSelectedProject} projects={projects} setProjects={setProjects} />
+                <Edit isOpen={showEdit} onRequestClose={closeEdit} selectedProject={selectedProject} setSelectedProject={setSelectedProject} updateProject={updateProject} />
             }
         </div>
     )
