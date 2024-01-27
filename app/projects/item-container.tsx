@@ -2,11 +2,11 @@
 
 import { Project } from "./data/project";
 import React, { useState } from 'react';
-import CustomCard from "./component/custom-card";
+import CustomCard from "./component/card/custom-card";
 import { DndContext, KeyboardSensor, PointerSensor, closestCenter, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, rectSortingStrategy, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { arrayMove } from "@dnd-kit/sortable";
-import { SortableItem } from "./component/sortable-item";
+import { SortableItem } from "./component/dnd/sortable-item";
 import { DragOverlay } from "@dnd-kit/core";
 
 import { updateProjects } from "./logic/project_curd";
