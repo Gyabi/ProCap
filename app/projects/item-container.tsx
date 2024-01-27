@@ -6,7 +6,7 @@ import CustomCard from "./component/card/custom-card";
 import { DndContext, KeyboardSensor, PointerSensor, closestCenter, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, rectSortingStrategy, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { arrayMove } from "@dnd-kit/sortable";
-import { SortableItem } from "./component/dnd/sortable-item";
+import { SortableItem, handlePositionType } from "./component/dnd/sortable-item";
 import { DragOverlay } from "@dnd-kit/core";
 
 import { updateProjects } from "./logic/project_curd";
@@ -75,12 +75,12 @@ export const ItemContainer: React.FC<ItemContainerProps> = ({projects, setProjec
                                 <SortableItem id={project.id} key={project.id} >
                                     <div className="mx-5">
                                         {/* カードコンポーネント */}
-                                        <CustomCard
+                                        {/* <CustomCard
                                             id={project.id}
                                             projectName={project.projectName}
                                             description={project.description}
                                             showProject={showProject}
-                                        />  
+                                        />   */}
                                     </div>
                                 </SortableItem>
                             );
