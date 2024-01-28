@@ -48,7 +48,7 @@ export const readProjectContainers = async ():Promise<ProjectContainer[]> => {
                     otherUrls: []
                 },
                 {
-                    id: "2",
+                    id: "02",
                     projectName: "Sample Project 2",
                     description: "This is a sample project 2.",
                     mainPath: {
@@ -64,11 +64,11 @@ export const readProjectContainers = async ():Promise<ProjectContainer[]> => {
             ]
         },
         {
-            id: "02",
+            id: "2",
             containerName: "Sample Container 2",
             projects: [
                 {
-                    id: "3",
+                    id: "03",
                     projectName: "Sample Project 3",
                     description: "This is a sample project 3.",
                     mainPath: {
@@ -82,7 +82,7 @@ export const readProjectContainers = async ():Promise<ProjectContainer[]> => {
                     otherUrls: []
                 },
                 {
-                    id: "4",
+                    id: "04",
                     projectName: "Sample Project 4",
                     description: "This is a sample project 4.",
                     mainPath: {
@@ -98,11 +98,11 @@ export const readProjectContainers = async ():Promise<ProjectContainer[]> => {
             ]
         },
         {
-            id: "03",
+            id: "3",
             containerName: "Sample Container 3",
             projects: [
                 {
-                    id: "5",
+                    id: "05",
                     projectName: "Sample Project 5",
                     description: "This is a sample project 5.",
                     mainPath: {
@@ -116,7 +116,7 @@ export const readProjectContainers = async ():Promise<ProjectContainer[]> => {
                     otherUrls: []
                 },
                 {
-                    id: "6",
+                    id: "06",
                     projectName: "Sample Project 6",
                     description: "This is a sample project 6.",
                     mainPath: {

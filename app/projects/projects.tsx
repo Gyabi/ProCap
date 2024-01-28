@@ -9,6 +9,9 @@ import { ItemContainer } from "./item-container";
 import { Project, ProjectContainer } from "./data/project";
 import { readProjectContainers, readProjects, updateProjectContainers, updateProjects } from "./logic/project_curd";
 
+import {MultipleContainers} from "./component/dnd/sample/MultipleContainers";
+import { rectSortingStrategy } from "@dnd-kit/sortable";
+
 import { message } from "@tauri-apps/api/dialog";
 
 export default function Projects() {
@@ -18,6 +21,8 @@ export default function Projects() {
 
     // 選択中のデータ
     const [selectedProject, setSelectedProject] = useState<Project | undefined>(undefined);
+    // 選択中のコンテナ
+    const [selectedContainer, setSelectedContainer] = useState<ProjectContainer | undefined>(undefined);
 
     // 初回ロード時にプロジェクトデータを取得する処理(2回フェッチ対策でignoreを使用)
     useEffect(() => {
@@ -193,8 +198,18 @@ export default function Projects() {
 
             {/* メインコンテンツ領域 */}
             <div className="flex justify-center items-center w-full h-full">
-                <ProjectsMain projectContainers={projectContainers} setProjectContainers={setProjectContainers} openSelect={openSelect} />
+                {/* <ProjectsMain projectContainers={projectContainers} setProjectContainers={setProjectContainers} openSelect={openSelect} /> */}
                 {/* <ItemContainer projects={projects} setProjects={setProjects} showProject={openSelect} /> */}
+                <MultipleContainers
+                    columns={2}
+                    itemCount={5}
+                    strategy={rectSortingStrategy}
+                    wrapperStyle={() => ({
+                    width: 150,
+                    height: 150,
+                    })}
+                    vertical
+                />
             </div>
 
             {/* 選択時画面 */}
