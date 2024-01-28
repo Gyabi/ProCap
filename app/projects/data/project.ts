@@ -11,9 +11,3 @@ export type Project = {
     explorerPaths: ExplorerPath[]; // Array of explorer paths
     otherUrls: OtherURL[]; // Array of other URLs
 }
-
-export type ProjectContainer = {
-    id: string; // UUID as string
-    containerName: string; // Container name
-    projects: Project[]; // Array of projects
-}

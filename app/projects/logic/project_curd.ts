@@ -1,4 +1,4 @@
-import { Project, ProjectContainer } from "../data/project";
+import { Project } from "../data/project";
 import { invoke } from "@tauri-apps/api/tauri";
 import { message } from "@tauri-apps/api/dialog";
 
@@ -23,115 +23,100 @@ export const readProjects = async ():Promise<Project[]> => {
     });
 }
 
-export const updateProjectContainers = async (projectContainers: ProjectContainer[]):Promise<void> => {
+export const updateProjectContainers = async (projectContainers: Record<string, Project[]>):Promise<void> => {
+    console.log("save_project_containers_command");
 }
 
-export const readProjectContainers = async ():Promise<ProjectContainer[]> => {
-    const sampledata:ProjectContainer[] = [
-        {
-            id: "1",
-            containerName: "Sample Container",
-            projects: [
-                {
-                    id: "01",
-                    projectName: "Sample Project",
-                    description: "This is a sample project.",
-                    mainPath: {
-                        id: "1",
-                        title: "Sample Path",
-                        path: "C:\\Users\\user\\Documents\\sample_project",
-                        description: "This is a sample path."
-
-                    },
-                    gitUrls: [],
-                    explorerPaths: [],
-                    otherUrls: []
+export const readProjectContainers = async ():Promise<Record<string, Project[]>> => {
+    const sampledata: Record<string, Project[]> = {
+        "container1":[
+            {
+                id: "project1",
+                projectName: "プロジェクト1",
+                description: "プロジェクト1の説明",
+                mainPath:{
+                    id: "mainPath1",
+                    path: "C:\\Users\\user\\Documents\\project1",
+                    title: "メインパス1",
+                    description: "メインパス1の説明"
                 },
-                {
-                    id: "02",
-                    projectName: "Sample Project 2",
-                    description: "This is a sample project 2.",
-                    mainPath: {
-                        id: "2",
-                        title: "Sample Path 2",
-                        path: "C:\\Users\\user\\Documents\\sample_project2",
-                        description: "This is a sample path 2."
-                    },
-                    gitUrls: [],
-                    explorerPaths: [],
-                    otherUrls: []
-                }
-            ]
-        },
-        {
-            id: "2",
-            containerName: "Sample Container 2",
-            projects: [
-                {
-                    id: "03",
-                    projectName: "Sample Project 3",
-                    description: "This is a sample project 3.",
-                    mainPath: {
-                        id: "3",
-                        title: "Sample Path 3",
-                        path: "C:\\Users\\user\\Documents\\sample_project3",
-                        description: "This is a sample path 3."
-                    },
-                    gitUrls: [],
-                    explorerPaths: [],
-                    otherUrls: []
+                explorerPaths:[],
+                gitUrls:[],
+                otherUrls:[]
+            },
+            {
+                id: "project2",
+                projectName: "プロジェクト2",
+                description: "プロジェクト2の説明",
+                mainPath:{
+                    id: "mainPath2",
+                    path: "C:\\Users\\user\\Documents\\project2",
+                    title: "メインパス2",
+                    description: "メインパス2の説明"
                 },
-                {
-                    id: "04",
-                    projectName: "Sample Project 4",
-                    description: "This is a sample project 4.",
-                    mainPath: {
-                        id: "4",
-                        title: "Sample Path 4",
-                        path: "C:\\Users\\user\\Documents\\sample_project4",
-                        description: "This is a sample path 4."
-                    },
-                    gitUrls: [],
-                    explorerPaths: [],
-                    otherUrls: []
-                }
-            ]
-        },
-        {
-            id: "3",
-            containerName: "Sample Container 3",
-            projects: [
-                {
-                    id: "05",
-                    projectName: "Sample Project 5",
-                    description: "This is a sample project 5.",
-                    mainPath: {
-                        id: "5",
-                        title: "Sample Path 5",
-                        path: "C:\\Users\\user\\Documents\\sample_project5",
-                        description: "This is a sample path 5."
-                    },
-                    gitUrls: [],
-                    explorerPaths: [],
-                    otherUrls: []
+                explorerPaths:[],
+                gitUrls:[],
+                otherUrls:[]
+            },
+            {
+                id: "project3",
+                projectName: "プロジェクト3",
+                description: "プロジェクト3の説明",
+                mainPath:{
+                    id: "mainPath3",
+                    path: "C:\\Users\\user\\Documents\\project3",
+                    title: "メインパス3",
+                    description: "メインパス3の説明"
                 },
-                {
-                    id: "06",
-                    projectName: "Sample Project 6",
-                    description: "This is a sample project 6.",
-                    mainPath: {
-                        id: "6",
-                        title: "Sample Path 6",
-                        path: "C:\\Users\\user\\Documents\\sample_project6",
-                        description: "This is a sample path 6."
-                    },
-                    gitUrls: [],
-                    explorerPaths: [],
-                    otherUrls: []
-                }
-            ]
-        }
-    ]
-
+                explorerPaths:[],
+                gitUrls:[],
+                otherUrls:[]
+            }
+        ],
+        "container2":[
+            {
+                id: "project4",
+                projectName: "プロジェクト4",
+                description: "プロジェクト4の説明",
+                mainPath:{
+                    id: "mainPath4",
+                    path: "C:\\Users\\user\\Documents\\project4",
+                    title: "メインパス4",
+                    description: "メインパス4の説明"
+                },
+                explorerPaths:[],
+                gitUrls:[],
+                otherUrls:[]
+            },
+            {
+                id: "project5",
+                projectName: "プロジェクト5",
+                description: "プロジェクト5の説明",
+                mainPath:{
+                    id: "mainPath5",
+                    path: "C:\\Users\\user\\Documents\\project5",
+                    title: "メインパス5",
+                    description: "メインパス5の説明"
+                },
+                explorerPaths:[],
+                gitUrls:[],
+                otherUrls:[]
+            },
+            {
+                id: "project6",
+                projectName: "プロジェクト6",
+                description: "プロジェクト6の説明",
+                mainPath:{
+                    id: "mainPath6",
+                    path: "C:\\Users\\user\\Documents\\project6",
+                    title: "メインパス6",
+                    description: "メインパス6の説明"
+                },
+                explorerPaths:[],
+                gitUrls:[],
+                otherUrls:[]
+            }
+        ]
+    };
     return sampledata;
 }

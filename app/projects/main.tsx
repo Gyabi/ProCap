@@ -1,18 +1,21 @@
 "use client";
 // Container配列を表示するメインコンポーネント
-import { ProjectContainer, Project } from "./data/project";
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Project } from "./data/project";
+import React, { use, useCallback, useEffect, useRef, useState } from 'react';
 import CustomCard from "./component/card/custom-card";
 import { MouseSensor, TouchSensor, CollisionDetection, DndContext, DragEndEvent, KeyboardSensor, MeasuringStrategy, PointerSensor, UniqueIdentifier, closestCenter, getFirstCollision, pointerWithin, rectIntersection, useSensor, useSensors, DragStartEvent, DragOverEvent } from "@dnd-kit/core";
 import { SortableContext, rectSortingStrategy, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { arrayMove } from "@dnd-kit/sortable";
-import { SortableItem, handlePositionType } from "./component/dnd/sortable-item";
+import { SortableItem } from "./component/dnd/sortable-item";
 import { DroppableContainer } from "./component/dnd/droppable-container";
-import { Rect } from "@dnd-kit/core/dist/utilities";
+import { updateProjectContainers } from "./logic/project_curd";
 
+/**
+ * プロジェクトメインコンポーネントのProps
+ */
 interface ProjectsMainProps {
-    projectContainers: ProjectContainer[];
-    setProjectContainers: (projectContainers: ProjectContainer[]) => void;
+    initProjectContainers: Record<string, Project[]>;
+    setInitProjectContainers: React.Dispatch<React.SetStateAction<Record<string, Project[]>>>;
     openSelect: (containerId:string, projectId:string) => void;
 }
 
@@ -21,98 +24,15 @@ interface ProjectsMainProps {
  * @param param0 
  * @returns 
  */
-export const ProjectsMain: React.FC<ProjectsMainProps> = ({ projectContainers, setProjectContainers, openSelect }:ProjectsMainProps) => {
-    const [items, setItems] = useState<Record<string, Project[]>>({
-        "container1":[
-            {
-                id: "project1",
-                projectName: "プロジェクト1",
-                description: "プロジェクト1の説明",
-                mainPath:{
-                    id: "mainPath1",
-                    path: "C:\\Users\\user\\Documents\\project1",
-                    title: "メインパス1",
-                    description: "メインパス1の説明"
-                },
-                explorerPaths:[],
-                gitUrls:[],
-                otherUrls:[]
-            },
-            {
-                id: "project2",
-                projectName: "プロジェクト2",
-                description: "プロジェクト2の説明",
-                mainPath:{
-                    id: "mainPath2",
-                    path: "C:\\Users\\user\\Documents\\project2",
-                    title: "メインパス2",
-                    description: "メインパス2の説明"
-                },
-                explorerPaths:[],
-                gitUrls:[],
-                otherUrls:[]
-            },
-            {
-                id: "project3",
-                projectName: "プロジェクト3",
-                description: "プロジェクト3の説明",
-                mainPath:{
-                    id: "mainPath3",
-                    path: "C:\\Users\\user\\Documents\\project3",
-                    title: "メインパス3",
-                    description: "メインパス3の説明"
-                },
-                explorerPaths:[],
-                gitUrls:[],
-                otherUrls:[]
-            }
-        ],
-        "container2":[
-            {
-                id: "project4",
-                projectName: "プロジェクト4",
-                description: "プロジェクト4の説明",
-                mainPath:{
-                    id: "mainPath4",
-                    path: "C:\\Users\\user\\Documents\\project4",
-                    title: "メインパス4",
-                    description: "メインパス4の説明"
-                },
-                explorerPaths:[],
-                gitUrls:[],
-                otherUrls:[]
-            },
-            {
-                id: "project5",
-                projectName: "プロジェクト5",
-                description: "プロジェクト5の説明",
-                mainPath:{
-                    id: "mainPath5",
-                    path: "C:\\Users\\user\\Documents\\project5",
-                    title: "メインパス5",
-                    description: "メインパス5の説明"
-                },
-                explorerPaths:[],
-                gitUrls:[],
-                otherUrls:[]
-            },
-            {
-                id: "project6",
-                projectName: "プロジェクト6",
-                description: "プロジェクト6の説明",
-                mainPath:{
-                    id: "mainPath6",
-                    path: "C:\\Users\\user\\Documents\\project6",
-                    title: "メインパス6",
-                    description: "メインパス6の説明"
-                },
-                explorerPaths:[],
-                gitUrls:[],
-                otherUrls:[]
-            }
-        ]
-    });
-    const [containers, setContainers] = useState<UniqueIdentifier[]>(Object.keys(items));
+export const ProjectsMain: React.FC<ProjectsMainProps> = ({ initProjectContainers, setInitProjectContainers, openSelect }:ProjectsMainProps) => {
+    const [projectContainers, setProjectContainers] = useState<Record<string, Project[]>>(initProjectContainers);
+    // コンテナのIDリスト
+    const [containers, setContainers] = useState<UniqueIdentifier[]>(Object.keys(projectContainers));
+
+    useEffect(() => {
+        setProjectContainers(initProjectContainers);
+        setContainers(Object.keys(initProjectContainers));
+    }, [initProjectContainers]);
     
     const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
     const lastOverId = useRef<UniqueIdentifier | null>(null);
@@ -127,11 +47,11 @@ export const ProjectsMain: React.FC<ProjectsMainProps> = ({ projectContainers, s
      */
     const collisionDetectionStrategy: CollisionDetection = useCallback(
         (args) => {
-          if (activeId && activeId in items) {
+          if (activeId && activeId in projectContainers) {
             return closestCenter({
               ...args,
               droppableContainers: args.droppableContainers.filter(
-                (container) => container.id in items
+                (container) => container.id in projectContainers
               ),
             });
           }
@@ -146,8 +66,8 @@ export const ProjectsMain: React.FC<ProjectsMainProps> = ({ projectContainers, s
           let overId = getFirstCollision(intersections, 'id');
     
           if (overId != null) {
-            if (overId in items) {
-              const containerItems = items[overId];
+            if (overId in projectContainers) {
+              const containerItems = projectContainers[overId];
     
               // If a container is matched and it contains items (columns 'A', 'B', 'C')
               if (containerItems.length > 0) {
@@ -179,7 +99,7 @@ export const ProjectsMain: React.FC<ProjectsMainProps> = ({ projectContainers, s
           // If no droppable is matched, return the last match
           return lastOverId.current ? [{id: lastOverId.current}] : [];
         },
-        [activeId, items]
+        [activeId, projectContainers]
       );
 
     const [clonedItems, setClonedItems] = useState<Record<string, Project[]> | null>(null);
@@ -188,17 +108,17 @@ export const ProjectsMain: React.FC<ProjectsMainProps> = ({ projectContainers, s
         useSensor(TouchSensor)
     );
     const findContainer = (id: UniqueIdentifier) => {
-        if (id in items) {
+        if (id in projectContainers) {
             return id;
         }
 
-        return Object.keys(items).find((key) => items[key].some((item) => item.id === id));
+        return Object.keys(projectContainers).find((key) => projectContainers[key].some((item) => item.id === id));
     };
 
     const onDragCancel = () => {
         // データをクローンしているならコピーしてもとに戻す
         if (clonedItems) {
-            setItems(clonedItems);
+            setProjectContainers(clonedItems);
         }
 
         setActiveId(null);
@@ -207,11 +127,11 @@ export const ProjectsMain: React.FC<ProjectsMainProps> = ({ projectContainers, s
 
     const onDragStart = (event: DragStartEvent) => {
         setActiveId(event.active.id);
-        setClonedItems(items);
+        setClonedItems(projectContainers);
     }
 
     function getNextContainerId() {
-        const containerIds = Object.keys(items);
+        const containerIds = Object.keys(projectContainers);
         const lastContainerId = containerIds[containerIds.length - 1];
 
         return String.fromCharCode(lastContainerId.charCodeAt(0) + 1);
@@ -223,7 +143,7 @@ export const ProjectsMain: React.FC<ProjectsMainProps> = ({ projectContainers, s
         const activeId = event.active.id;
 
         // ドラッグオーバーされた要素が存在しない、またはアクティブな要素が既にitemsに存在する場合は何もしません。
-        if(overId == null || activeId in items) {
+        if(overId == null || activeId in projectContainers) {
             return;
         }
 
@@ -238,7 +158,7 @@ export const ProjectsMain: React.FC<ProjectsMainProps> = ({ projectContainers, s
 
         // ドラッグオーバーされた要素とアクティブな要素が異なるコンテナに存在する場合、アイテムの移動を行います。
         if (overContainer !== activeContainer) {
-            setItems((items) => {
+            setProjectContainers((items) => {
                 // アクティブな要素とドラッグオーバーされた要素のリストを取得します。
                 const activeItems = items[activeContainer];
                 const overItems = items[overContainer];
@@ -288,16 +208,21 @@ export const ProjectsMain: React.FC<ProjectsMainProps> = ({ projectContainers, s
         const active = event.active;
         const over = event.over;
 
+        let newContainers: UniqueIdentifier[] = containers;
+
         // アクティブな要素がitemsに存在し、オーバー要素が存在する場合
-        if (active.id in items && over?.id) {
+        if (active.id in projectContainers && over?.id) {
             // コンテナの順序を更新します
             setContainers((containers) => {
               // アクティブな要素とオーバー要素のインデックスを取得します
               const activeIndex = containers.indexOf(active.id);
               const overIndex = containers.indexOf(over.id);
+
+              // アクティブな要素とオーバー要素の位置を入れ替えた新しい配列を作成します
+              newContainers = arrayMove(containers, activeIndex, overIndex);
   
               // アクティブな要素とオーバー要素の位置を入れ替えます
-              return arrayMove(containers, activeIndex, overIndex);
+              return newContainers;
             });
         }
 
@@ -321,33 +246,48 @@ export const ProjectsMain: React.FC<ProjectsMainProps> = ({ projectContainers, s
 
         // オーバー要素のコンテナを探します
         const overContainer = findContainer(overId);
+        let newProjectContainers = projectContainers;
         if (overContainer) {
             // アクティブな要素とオーバー要素のインデックスを取得します
-            const activeIndex = items[overContainer].findIndex((item) => item.id === active.id);
-            const overIndex = items[overContainer].findIndex((item) => item.id === overId);
+            const activeIndex = projectContainers[overContainer].findIndex((item) => item.id === active.id);
+            const overIndex = projectContainers[overContainer].findIndex((item) => item.id === overId);
   
             // アクティブな要素とオーバー要素の位置が異なる場合、その位置を入れ替えます
             if (activeIndex !== overIndex) {
-              setItems((items) => ({
-                ...items,
                 // アクティブな要素とオーバー要素の位置を入れ替えた新しい配列を設定します
-                [overContainer]: arrayMove(
-                  items[overContainer],
-                  activeIndex,
-                  overIndex
-                ),
-              }));
+                newProjectContainers = {
+                    ...projectContainers,
+                    [overContainer]: arrayMove(
+                    projectContainers[overContainer],
+                    activeIndex,
+                    overIndex
+                    ),
+                }
+                setProjectContainers(newProjectContainers);
             }
-          }
-  
+        }
+
+        // 親が管理しているデータ構造の大本を更新(今回の並べ替えが適応された最新版containersの順番で再格納する)
+        // ※本関数ではコンテナの表示順を管理しているContainer配列と辞書型のデータ自体を管理しているprojectContainersの両方を更新している
+        // よってその両方の情報を統合して最新版の辞書データ構造を生成し、親コンポーネントが管理している本データを更新する（UseEffect設定により即時本コンポーネントへも伝達される）
+        const tmpProjectContainers: Record<string, Project[]> = {};
+        newContainers.forEach((containerId) => {
+            tmpProjectContainers[containerId] = newProjectContainers[containerId];
+        });
+        setInitProjectContainers(tmpProjectContainers);
+
+        // 現在のデータ構造を永続化
+        updateProjectContainers(tmpProjectContainers);
+
         // ドラッグ終了後、アクティブなIDをnullに設定します
         setActiveId(null);
     }
+
     useEffect(() => {
         requestAnimationFrame(() => {
             recentlyMovedToNewContainer.current = false;
         });
-    }, [items]);
+    }, [projectContainers]);
 
     return (
         <div className="w-full h-full flex flex-col items-center justify-start">
@@ -375,11 +315,11 @@ export const ProjectsMain: React.FC<ProjectsMainProps> = ({ projectContainers, s
                             <DroppableContainer
                                 id={containerId.toString()}
                                 title={containerId.toString()}
-                                items={items[containerId]}
+                                items={projectContainers[containerId]}
                             >
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full h-full">
-                                    <SortableContext items={items[containerId]} strategy={rectSortingStrategy}>
-                                        {items[containerId].map((project, index) => {
+                                    <SortableContext items={projectContainers[containerId]} strategy={rectSortingStrategy}>
+                                        {projectContainers[containerId].map((project, index) => {
                                             return (
                                                 <SortableItem id={project.id} key={project.id} >
                                                     <div className="mx-5">

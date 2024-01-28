@@ -48,8 +48,6 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
         // データの削除と保存を実行
         await deleteProject(selectedProject.id);
 
-        setSelectedProject(undefined);
-
         onRequestClose();
       };
     });

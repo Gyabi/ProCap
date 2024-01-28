@@ -5,31 +5,26 @@ import { ProjectsMain } from "./main";
 import { Select } from "./select";
 import { Add } from "./add";
 import { Edit } from "./edit";
-import { ItemContainer } from "./item-container";
-import { Project, ProjectContainer } from "./data/project";
+import { Project } from "./data/project";
 import { readProjectContainers, readProjects, updateProjectContainers, updateProjects } from "./logic/project_curd";
-
-import {MultipleContainers} from "./component/dnd/sample/MultipleContainers";
-import { rectSortingStrategy } from "@dnd-kit/sortable";
 
 import { message } from "@tauri-apps/api/dialog";
 
 export default function Projects() {
     // プロジェクトデータ
-    // const [projects, setProjects] = useState<Project[]>([]);
-    const [projectContainers, setProjectContainers] = useState<ProjectContainer[]>([]);
+    const [projectContainers, setProjectContainers] = useState<Record<string, Project[]>>({});
 
     // 選択中のデータ
     const [selectedProject, setSelectedProject] = useState<Project | undefined>(undefined);
     // 選択中のコンテナ
-    const [selectedContainer, setSelectedContainer] = useState<ProjectContainer | undefined>(undefined);
+    const [selectedContainer, setSelectedContainer] = useState<string | undefined>(undefined);
 
     // 初回ロード時にプロジェクトデータを取得する処理(2回フェッチ対策でignoreを使用)
     useEffect(() => {
         let ignore = false;
 
         readProjectContainers()
-            .then((projectContainers: ProjectContainer[]) => {
+            .then((projectContainers: Record<string, Project[]>) => {
                 if (!ignore) {
                     setProjectContainers(projectContainers);
                 }
@@ -39,21 +34,17 @@ export default function Projects() {
     }, []);
 
 
-    const deleteProject = async (containerId:string, projectId: string) => {
-        // 対象のコンテナに対応するindexを取得
-        const containerIndex = projectContainers.findIndex((container) => container.id == containerId);
-        // 対象のコンテナを取得
-        const container = projectContainers[containerIndex];
+    const deleteProject = async (projectId: string) => {
+        if (selectedContainer === undefined) {
+            return;
+        }
+        const containerId = selectedContainer;
 
         // 対象のプロジェクトを削除
-        const projects = container.projects;
+        const projects = projectContainers[containerId];
         const newProjects = projects.filter((project) => project.id != projectId);
-        const newContainer = {...container, projects: newProjects};
+        const newContainers = {...projectContainers, [containerId]: newProjects};
         
-        // newContainerに差し替え
-        const newContainers = [...projectContainers];
-        newContainers[containerIndex] = newContainer;
-
         // stateを更新
         setProjectContainers(newContainers);
 
@@ -61,21 +52,18 @@ export default function Projects() {
         await updateProjectContainers(newContainers);
     }
 
-    const updateProject = async (containerId:string, projectId:string, project: Project) => {
-        // 対象のコンテナに対応するindexを取得
-        const containerIndex = projectContainers.findIndex((container) => container.id == containerId);
-        // 対象のコンテナを取得
-        const container = projectContainers[containerIndex];
-
-        // 対象のプロジェクトを更新
-        const projects = container.projects;
+    const updateProject = async (projectId:string, project: Project) => {
+        if (selectedContainer === undefined) {
+            return;
+        }
+        const containerId = selectedContainer;
+       // 対象のプロジェクトを更新
+        const projects = projectContainers[containerId];
         const index = projects.findIndex((p) => p.id == projectId);
         projects[index] = project;
-        const newContainer = {...container, projects: projects};
 
         // newContainerに差し替え
-        const newContainers = [...projectContainers];
-        newContainers[containerIndex] = newContainer;
+        const newContainers = {...projectContainers, [containerId]: projects};
 
         // stateを更新
         setProjectContainers(newContainers);
@@ -85,22 +73,19 @@ export default function Projects() {
     }
 
     const addProject = async (project: Project) => {
-        // 末尾のコンテナindexを取得
-        const containerIndex = projectContainers.length - 1;
-        // 対象のコンテナを取得
-        const container = projectContainers[containerIndex];
+        // 末尾のコンテナを取得
+        const projects = projectContainers[Object.keys(projectContainers)[Object.keys(projectContainers).length - 1]];
 
         // 対象のプロジェクトを追加
-        const projects = container.projects;
         projects.push(project);
-        const newContainer = {...container, projects: projects};
 
         // newContainerに差し替え
-        const newContainers = [...projectContainers];
-        newContainers[containerIndex] = newContainer;
+        const newContainers = {...projectContainers, [Object.keys(projectContainers)[Object.keys(projectContainers).length - 1]]: projects};
 
+        console.log(projectContainers)
         // stateを更新
         setProjectContainers(newContainers);
+        console.log(projectContainers)
 
         // ローカルに保存して永続化
         await updateProjectContainers(newContainers);
@@ -122,13 +107,11 @@ export default function Projects() {
     // 選択画面
     const [showSelect, setShowSelect] = useState(false);
     const openSelect = (containerId:string, projectId:string) => {
-        // 対象のコンテナに対応するindexを取得
-        const containerIndex = projectContainers.findIndex((container) => container.id == containerId);
-        // 対象のコンテナを取得
-        const container = projectContainers[containerIndex];
+        // 選択中のコンテナを設定
+        setSelectedContainer(containerId);
 
         // 対象のプロジェクトを取得
-        const targetProject = container.projects.find((project) => project.id == projectId);
+        const targetProject = projectContainers[containerId].find((project) => project.id == projectId);
 
         // 選択しているプロジェクトを設定
         setSelectedProject(targetProject);
@@ -143,6 +126,8 @@ export default function Projects() {
     }
     const closeSelect = () => {
         setShowSelect(false);
+        setSelectedProject(undefined);
+        setSelectedContainer(undefined);
         updateState(State.DEFAULT);
     }
     
@@ -150,7 +135,7 @@ export default function Projects() {
     const [showAdd, setShowAdd] = useState(false);
     const openAdd = async () => {
         // containerが存在しないならエラーメッセージを表示
-        if(projectContainers.length == 0){
+        if(Object.keys(projectContainers).length == 0){
             await message("プロジェクトコンテナが存在しません。")
                 .then(
                     () => {
@@ -198,36 +183,25 @@ export default function Projects() {
 
             {/* メインコンテンツ領域 */}
             <div className="flex justify-center items-center w-full h-full">
-                <ProjectsMain projectContainers={projectContainers} setProjectContainers={setProjectContainers} openSelect={openSelect} />
-                {/* <ItemContainer projects={projects} setProjects={setProjects} showProject={openSelect} /> */}
-                {/* <MultipleContainers
-                    columns={2}
-                    itemCount={5}
-                    strategy={rectSortingStrategy}
-                    wrapperStyle={() => ({
-                    width: 150,
-                    height: 150,
-                    })}
-                    vertical
-                /> */}
+                <ProjectsMain initProjectContainers={projectContainers} setInitProjectContainers={setProjectContainers} openSelect={openSelect} />
             </div>
 
             {/* 選択時画面 */}
             {
-                // state == State.SELECT &&
-                // <Select isOpen={showSelect} onRequestClose={closeSelect} selectedProject={selectedProject} setSelectedProject={setSelectedProject} deleteProject={deleteProject} openEditModal={openEdit}/>
+                state == State.SELECT &&
+                <Select isOpen={showSelect} onRequestClose={closeSelect} selectedProject={selectedProject} setSelectedProject={setSelectedProject} deleteProject={deleteProject} openEditModal={openEdit}/>
             }
 
             {/* 追加画面 */}
             {
-                // state == State.ADD &&
-                // <Add isOpen={showAdd} onRequestClose={closeAdd} addProject={addProject}/>
+                state == State.ADD &&
+                <Add isOpen={showAdd} onRequestClose={closeAdd} addProject={addProject}/>
             }
 
             {/* 編集画面 */}
             {
-                // state == State.EDIT &&
-                // <Edit isOpen={showEdit} onRequestClose={closeEdit} selectedProject={selectedProject} setSelectedProject={setSelectedProject} updateProject={updateProject} />
+                state == State.EDIT &&
+                <Edit isOpen={showEdit} onRequestClose={closeEdit} selectedProject={selectedProject} setSelectedProject={setSelectedProject} updateProject={updateProject} />
             }
         </div>
     )
