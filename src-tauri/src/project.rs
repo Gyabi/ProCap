@@ -13,13 +13,13 @@ use std::path::Path;
 /// # Returns
 /// 
 /// * `Result<(), Box<dyn std::error::Error>>` - 保存に成功したかどうか
-pub async fn save_projects(projects: Vec<Project>)-> Result<(), Box<dyn std::error::Error>> {
+pub async fn save_projects(project_containers: Vec<ProjectContainer>)-> Result<(), Box<dyn std::error::Error>> {
     // パスを取得
     let path = get_json_path();
 
     // 保存用データ構造を作成
     let project_data = ProjectDataJsonStruct {
-        projects: projects,
+        project_containers: project_containers,
     };
 
     // ディレクトリの存在を保証
@@ -44,7 +44,7 @@ pub async fn save_projects(projects: Vec<Project>)-> Result<(), Box<dyn std::err
 
 /// プロジェクトデータの読み込み
 /// 
-pub async fn load_projects() -> Result<Vec<Project>, Box<dyn std::error::Error>> {
+pub async fn load_projects() -> Result<Vec<ProjectContainer>, Box<dyn std::error::Error>> {
     // パスを取得
     let path = get_json_path();
 
@@ -57,7 +57,7 @@ pub async fn load_projects() -> Result<Vec<Project>, Box<dyn std::error::Error>>
     let json = fs::read_to_string(path)?;
     let project_data: ProjectDataJsonStruct = serde_json::from_str(&json)?;
 
-    Ok(project_data.projects)
+    Ok(project_data.project_containers)
 }
 
 /// jsonファイルを保存するパスを取得する関数
@@ -77,6 +77,14 @@ fn get_json_path() -> String {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct ProjectDataJsonStruct {
+    project_containers: Vec<ProjectContainer>,
+}
+
+// プロジェクトコンテナデータ
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct ProjectContainer {
+    name: String,
     projects: Vec<Project>,
 }
 
