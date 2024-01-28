@@ -7,11 +7,11 @@ use std::process::Command;
 use std::path::PathBuf;
 
 mod project;
-use project::{load_projects, save_projects, Project};
+use project::{load_projects, save_projects, ProjectContainer};
 
 
 #[tauri::command]
-async fn load_projects_command() -> Result<Vec<Project>, String> {
+async fn load_project_containers_command() -> Result<Vec<ProjectContainer>, String> {
   let projects = match load_projects().await {
     Ok(projects) => projects,
     Err(e) => return Err(format!("Failed to load project: {}", e)),
@@ -21,7 +21,7 @@ async fn load_projects_command() -> Result<Vec<Project>, String> {
 }
 
 #[tauri::command]
-async fn save_projects_command(projects: Vec<Project>) -> Result<(), String> {
+async fn save_project_containers_command(projects: Vec<ProjectContainer>) -> Result<(), String> {
   match save_projects(projects).await {
     Ok(_) => (),
     Err(e) => return Err(format!("Failed to save project: {}", e)),
@@ -121,7 +121,7 @@ fn open_browser(url: String) -> Result<(), String>{
 
 fn main() {
   tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![load_projects_command, save_projects_command, open_explorer, open_terminal, open_vscode, open_browser])
+    .invoke_handler(tauri::generate_handler![load_project_containers_command, save_project_containers_command, open_explorer, open_terminal, open_vscode, open_browser])
     .run(tauri::generate_context!())
     .expect("error while running tauri application");
 }
