@@ -1,6 +1,6 @@
 "use client";
 import { CustomModal } from "./component/modal/custom-modal";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Project } from "./data/project";
 import { ExplorerButton, BrowserButton, CopyButton, TerminalButton, VsCodeButton } from "./component/buttons/util-buttons";
 
@@ -47,8 +47,6 @@ export const Select: React.FC<SelectProps> = ({isOpen, onRequestClose, selectedP
       if(result){
         // データの削除と保存を実行
         await deleteProject(selectedProject.id);
-
-        setSelectedProject(undefined);
 
         onRequestClose();
       };

@@ -24,7 +24,7 @@ interface EditProps {
   onRequestClose: () => void;
   selectedProject: Project|undefined;
   setSelectedProject: React.Dispatch<React.SetStateAction<Project | undefined>>;
-  updateProject: (project: Project) => void;
+  updateProject: (projectId:string, project: Project) => void;
 }
 
 /**
@@ -44,11 +44,15 @@ export const Edit: React.FC<EditProps> = ({isOpen, onRequestClose, selectedProje
   }, [isOpen]);
 
   const onClickEditDone = async () => {
+    if(editProject === undefined){
+      return;
+    }
+
     // editProjectをprojectsとselectedProjectに反映する
     setSelectedProject(JSON.parse(JSON.stringify(editProject)));
 
     // データの更新と保存
-    updateProject(editProject as Project);
+    updateProject(editProject.id ,editProject);
 
     onRequestClose();
   }

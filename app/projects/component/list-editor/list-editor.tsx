@@ -2,7 +2,7 @@
 import { DndContext, KeyboardSensor, PointerSensor, closestCenter, useSensor, useSensors } from "@dnd-kit/core";
 import { SortableContext, rectSortingStrategy, sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { arrayMove } from "@dnd-kit/sortable";
-import { SortableItem, handlePositionType } from "../sortable-item";
+import { SortableItem, handlePositionType } from "../dnd/sortable-item";
 
 import { SingleRowInput } from "../inputs/single-row-input";
 import { MultiRowInput } from "../inputs/multi-row-input";
