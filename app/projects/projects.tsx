@@ -8,6 +8,9 @@ import { Edit } from "./edit";
 import { Project } from "./data/project";
 import { readProjectContainers, updateProjectContainers } from "./logic/project_curd";
 
+import { Menu, Transition } from '@headlessui/react'
+import { Fragment } from "react";
+
 import { message } from "@tauri-apps/api/dialog";
 
 export default function Projects() {
@@ -91,6 +94,22 @@ export default function Projects() {
         await updateProjectContainers(newContainers);
     }
 
+    const deleteContainer = async (containerId: string) => {
+    }
+
+    const updateContaner = async (containerId:string, name: string) => {
+    }
+
+    const addContainer = async () => {
+        if("newContainer" in Object.keys(projectContainers)){
+            return
+        }
+        setProjectContainers({...projectContainers, ["newContainer"]: []});
+
+        // ローカルに保存して永続化
+        await updateProjectContainers(projectContainers);
+    }
+
     enum State {
         DEFAULT,
         SELECT,
@@ -167,20 +186,43 @@ export default function Projects() {
         setShowEdit(false);
         updateState(State.DEFAULT);
     }
-
+    
     return (
         <div className="flex flex-col justify-start w-full h-full">
             {/* ボタンバー */}
-            <div className="flex justify-end">
-                {/* 追加ボタン */}
-                <button
-                    className="bg-purple-500 hover:bg-purple-700 text-black font-bold py-2 px-4 m-2 rounded-full"
-                    onClick={() => {
-                        openAdd();
-                    }}    
-                >
-                    +
-                </button>
+            <div className="flex justify-end m-1">
+                <Menu as="div" className="relative inline-block text-left">
+                    <div>
+                        <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-full px-3 py-2 text-sm font-bold text-gray-900 shadow-sm bg-purple-500 hover:bg-purple-700">
+                        +
+                        </Menu.Button>
+                    </div>
+
+                    <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                    >
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <div className="py-1">
+                            <Menu.Item>
+                            {({ active }) => (
+                                <a href="#" className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" id="menu-item-0" onClick={()=> openAdd()}>Project</a>
+                            )}
+                            </Menu.Item>
+                            <Menu.Item>
+                            {({ active }) => (
+                                <a href="#" className="text-gray-700 block px-4 py-2 text-sm" role="menuitem" id="menu-item-0" onClick={()=> addContainer()}>Container</a>
+                            )}
+                            </Menu.Item>
+                        </div>
+                        </Menu.Items>
+                    </Transition>
+                </Menu>
             </div>
 
             {/* メインコンテンツ領域 */}
