@@ -17,6 +17,8 @@ interface ProjectsMainProps {
     initProjectContainers: Record<string, Project[]>;
     setInitProjectContainers: React.Dispatch<React.SetStateAction<Record<string, Project[]>>>;
     openSelect: (containerId:string, projectId:string) => void;
+    updateContainer: (containerId:string, name:string) => void;
+    deleteContainer: (containerId:string) => void;
 }
 
 /**
@@ -24,7 +26,7 @@ interface ProjectsMainProps {
  * @param param0 
  * @returns 
  */
-export const ProjectsMain: React.FC<ProjectsMainProps> = ({ initProjectContainers, setInitProjectContainers, openSelect }:ProjectsMainProps) => {
+export const ProjectsMain: React.FC<ProjectsMainProps> = ({ initProjectContainers, setInitProjectContainers, openSelect, deleteContainer, updateContainer }:ProjectsMainProps) => {
     const [projectContainers, setProjectContainers] = useState<Record<string, Project[]>>(initProjectContainers);
     // コンテナのIDリスト
     const [containers, setContainers] = useState<UniqueIdentifier[]>(Object.keys(projectContainers));
@@ -316,6 +318,8 @@ export const ProjectsMain: React.FC<ProjectsMainProps> = ({ initProjectContainer
                                 id={containerId.toString()}
                                 title={containerId.toString()}
                                 items={projectContainers[containerId]}
+                                updateContainer={updateContainer}
+                                deleteContainer={deleteContainer}
                             >
                                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 w-full h-full">
                                     <SortableContext items={projectContainers[containerId]} strategy={rectSortingStrategy}>

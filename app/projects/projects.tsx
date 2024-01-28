@@ -95,19 +95,58 @@ export default function Projects() {
     }
 
     const deleteContainer = async (containerId: string) => {
+        // キーが等しい要素を削除
+        const newContainers = Object.keys(projectContainers).filter((key) => key != containerId);
+        const deletedContainer:Record<string, Project[]> = {};
+        newContainers.forEach((key:string) => {
+            deletedContainer[key] = projectContainers[key];
+        });
+
+        // stateを更新
+        setProjectContainers(deletedContainer);
+
+        // ローカルに保存して永続化
+        await updateProjectContainers(deletedContainer);
     }
 
     const updateContaner = async (containerId:string, name: string) => {
+        const keys = Object.keys(projectContainers);
+        const updatedContainer:Record<string, Project[]> = {};
+
+        if(keys.includes(name)){
+            await message("既に存在するコンテナ名です。")
+                .then(
+                    () => {
+                        return;
+                    }
+                );
+            return;
+        }
+
+        // 対象のコンテナを更新
+        keys.forEach((key) => {
+            if(key == containerId){
+                updatedContainer[name] = projectContainers[key];
+            }else{
+                updatedContainer[key] = projectContainers[key];
+            }
+        });
+
+        // stateを更新
+        setProjectContainers(updatedContainer);
+
+        // ローカルに保存して永続化
+        await updateProjectContainers(updatedContainer);
     }
 
     const addContainer = async () => {
         if("newContainer" in Object.keys(projectContainers)){
             return
         }
-        setProjectContainers({...projectContainers, ["newContainer"]: []});
-
+        const addedContainer = {...projectContainers, ["newContainer"]: []}
+        setProjectContainers(addedContainer);
         // ローカルに保存して永続化
-        await updateProjectContainers(projectContainers);
+        await updateProjectContainers(addedContainer);
     }
 
     enum State {
@@ -227,7 +266,7 @@ export default function Projects() {
 
             {/* メインコンテンツ領域 */}
             <div className="flex justify-center items-center w-full h-full">
-                <ProjectsMain initProjectContainers={projectContainers} setInitProjectContainers={setProjectContainers} openSelect={openSelect} />
+                <ProjectsMain initProjectContainers={projectContainers} setInitProjectContainers={setProjectContainers} openSelect={openSelect} deleteContainer={deleteContainer} updateContainer={updateContaner} />
             </div>
 
             {/* 選択時画面 */}
