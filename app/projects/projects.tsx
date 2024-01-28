@@ -6,7 +6,7 @@ import { Select } from "./select";
 import { Add } from "./add";
 import { Edit } from "./edit";
 import { Project } from "./data/project";
-import { readProjectContainers, readProjects, updateProjectContainers, updateProjects } from "./logic/project_curd";
+import { readProjectContainers, updateProjectContainers } from "./logic/project_curd";
 
 import { message } from "@tauri-apps/api/dialog";
 
@@ -142,6 +142,8 @@ export default function Projects() {
                         return;
                     }
                 );
+
+            return;
         }
         setShowAdd(true);
         setShowSelect(false);
