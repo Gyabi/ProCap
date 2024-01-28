@@ -101,15 +101,15 @@ function DroppableContainer({
   );
 }
 
-const dropAnimation: DropAnimation = {
-  sideEffects: defaultDropAnimationSideEffects({
-    styles: {
-      active: {
-        opacity: '0.5',
-      },
-    },
-  }),
-};
+// const dropAnimation: DropAnimation = {
+//   sideEffects: defaultDropAnimationSideEffects({
+//     styles: {
+//       active: {
+//         opacity: '0.5',
+//       },
+//     },
+//   }),
+// };
 
 type Items = Record<UniqueIdentifier, UniqueIdentifier[]>;
 
@@ -163,6 +163,7 @@ export function MultipleContainers({
   trashable = false,
   vertical = false,
   scrollable,
+  
 }: Props) {
   const [items, setItems] = useState<Items>(
     () =>
@@ -267,17 +268,17 @@ export function MultipleContainers({
     return Object.keys(items).find((key) => items[key].includes(id));
   };
 
-  const getIndex = (id: UniqueIdentifier) => {
-    const container = findContainer(id);
+//   const getIndex = (id: UniqueIdentifier) => {
+//     const container = findContainer(id);
 
-    if (!container) {
-      return -1;
-    }
+//     if (!container) {
+//       return -1;
+//     }
 
-    const index = items[container].indexOf(id);
+//     const index = items[container].indexOf(id);
 
-    return index;
-  };
+//     return index;
+//   };
 
   const onDragCancel = () => {
     if (clonedItems) {
@@ -479,7 +480,7 @@ export function MultipleContainers({
               </SortableContext>
             </DroppableContainer>
           ))}
-          {minimal ? undefined : (
+          {/* {minimal ? undefined : (
             <DroppableContainer
               id={PLACEHOLDER_ID}
               disabled={isSortingContainer}
@@ -489,7 +490,7 @@ export function MultipleContainers({
             >
               + Add column
             </DroppableContainer>
-          )}
+          )} */}
         </SortableContext>
       </div>
       {/* {createPortal(
@@ -502,29 +503,29 @@ export function MultipleContainers({
         </DragOverlay>,
         document.body
       )} */}
-      {trashable && activeId && !containers.includes(activeId) ? (
+      {/* {trashable && activeId && !containers.includes(activeId) ? (
         <Trash id={TRASH_ID} />
-      ) : null}
+      ) : null} */}
     </DndContext>
   );
 
-  function handleRemove(containerID: UniqueIdentifier) {
-    setContainers((containers) =>
-      containers.filter((id) => id !== containerID)
-    );
-  }
+//   function handleRemove(containerID: UniqueIdentifier) {
+//     setContainers((containers) =>
+//       containers.filter((id) => id !== containerID)
+//     );
+//   }
 
-  function handleAddColumn() {
-    const newContainerId = getNextContainerId();
+//   function handleAddColumn() {
+//     const newContainerId = getNextContainerId();
 
-    unstable_batchedUpdates(() => {
-      setContainers((containers) => [...containers, newContainerId]);
-      setItems((items) => ({
-        ...items,
-        [newContainerId]: [],
-      }));
-    });
-  }
+//     unstable_batchedUpdates(() => {
+//       setContainers((containers) => [...containers, newContainerId]);
+//       setItems((items) => ({
+//         ...items,
+//         [newContainerId]: [],
+//       }));
+//     });
+//   }
 
   function getNextContainerId() {
     const containerIds = Object.keys(items);
@@ -534,57 +535,57 @@ export function MultipleContainers({
   }
 }
 
-function getColor(id: UniqueIdentifier) {
-  switch (String(id)[0]) {
-    case 'A':
-      return '#7193f1';
-    case 'B':
-      return '#ffda6c';
-    case 'C':
-      return '#00bcd4';
-    case 'D':
-      return '#ef769f';
-  }
+// function getColor(id: UniqueIdentifier) {
+//   switch (String(id)[0]) {
+//     case 'A':
+//       return '#7193f1';
+//     case 'B':
+//       return '#ffda6c';
+//     case 'C':
+//       return '#00bcd4';
+//     case 'D':
+//       return '#ef769f';
+//   }
 
-  return undefined;
-}
+//   return undefined;
+// }
 
-function Trash({id}: {id: UniqueIdentifier}) {
-  const {setNodeRef, isOver} = useDroppable({
-    id,
-  });
+// function Trash({id}: {id: UniqueIdentifier}) {
+//   const {setNodeRef, isOver} = useDroppable({
+//     id,
+//   });
 
-  return (
-    <div
-      ref={setNodeRef}
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        position: 'fixed',
-        left: '50%',
-        marginLeft: -150,
-        bottom: 20,
-        width: 300,
-        height: 60,
-        borderRadius: 5,
-        border: '1px solid',
-        borderColor: isOver ? 'red' : '#DDD',
-      }}
-    >
-      Drop here to delete
-    </div>
-  );
-}
+//   return (
+//     <div
+//       ref={setNodeRef}
+//       style={{
+//         display: 'flex',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         position: 'fixed',
+//         left: '50%',
+//         marginLeft: -150,
+//         bottom: 20,
+//         width: 300,
+//         height: 60,
+//         borderRadius: 5,
+//         border: '1px solid',
+//         borderColor: isOver ? 'red' : '#DDD',
+//       }}
+//     >
+//       Drop here to delete
+//     </div>
+//   );
+// }
 
-function useMountStatus() {
-  const [isMounted, setIsMounted] = useState(false);
+// function useMountStatus() {
+//   const [isMounted, setIsMounted] = useState(false);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => setIsMounted(true), 500);
+//   useEffect(() => {
+//     const timeout = setTimeout(() => setIsMounted(true), 500);
 
-    return () => clearTimeout(timeout);
-  }, []);
+//     return () => clearTimeout(timeout);
+//   }, []);
 
-  return isMounted;
-}
+//   return isMounted;
+// }

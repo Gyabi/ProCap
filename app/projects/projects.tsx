@@ -198,9 +198,9 @@ export default function Projects() {
 
             {/* メインコンテンツ領域 */}
             <div className="flex justify-center items-center w-full h-full">
-                {/* <ProjectsMain projectContainers={projectContainers} setProjectContainers={setProjectContainers} openSelect={openSelect} /> */}
+                <ProjectsMain projectContainers={projectContainers} setProjectContainers={setProjectContainers} openSelect={openSelect} />
                 {/* <ItemContainer projects={projects} setProjects={setProjects} showProject={openSelect} /> */}
-                <MultipleContainers
+                {/* <MultipleContainers
                     columns={2}
                     itemCount={5}
                     strategy={rectSortingStrategy}
@@ -209,7 +209,7 @@ export default function Projects() {
                     height: 150,
                     })}
                     vertical
-                />
+                /> */}
             </div>
 
             {/* 選択時画面 */}
