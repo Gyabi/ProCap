@@ -96,8 +96,6 @@ fn open_vscode(path: String) -> Result<(), String>{
 
   Command::new("cmd")
     .arg("/c")
-    .arg("start")
-    .arg("/min")
     .arg("code")
     .arg(path_buf.to_str().unwrap())
     .spawn()
