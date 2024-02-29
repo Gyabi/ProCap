@@ -3,7 +3,7 @@
   windows_subsystem = "windows"
 )]
 
-use std::process::Command;
+use std::process::{Command, Stdio};
 use std::path::PathBuf;
 
 mod project;
@@ -94,13 +94,12 @@ fn open_vscode(path: String) -> Result<(), String>{
     return Err(format!("Path is not a directory: {}", path_buf.to_str().unwrap()));
   }
 
-  Command::new("cmd")
-    .arg("/c")
-    .arg("start")
-    .arg("/min")
-    .arg("code")
-    .arg(path_buf.to_str().unwrap())
+  let _ = Command::new("cmd")
+    .args(&["/c", "code", path_buf.to_str().unwrap()])
+    .stdout(Stdio::null()) // 必要に応じて標準出力を捨てる
+    .stderr(Stdio::null()) // 必要に応じて標準エラー出力を捨てる
     .spawn()
+    .map(|mut child| child.wait().map(|_| ())) // 子プロセスを待機する
     .map_err(|e| format!("Failed to open vscode: {}", e))?;
 
   Ok(())
