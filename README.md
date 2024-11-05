@@ -8,10 +8,7 @@ ProCapは、ローカルプロジェクトフォルダを管理するための�
 
 
 ## Demo
-<div style="display: flex; flex-wrap: wrap; justify-content: center;">
-    <img src="./doc/demo2.jpg" alt="Image 2" width="400" style="margin: 5px;">
-    <img src="./doc/demo.jpg" alt="Image 1" width="400" style="margin: 5px;">
-</div>
+![alt](./doc/demo.gif)
 
 ## Features
 - **Project Creation**  
